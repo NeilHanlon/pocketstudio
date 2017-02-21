@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">pocketStudio</string>
+    <string name="project_viewer">Project</string>
+    <string name="stop">Stop</string>
+    <string name="record">Record</string>
+    <string name="play">Play</string>
+    <string name="delete">Delete</string>
+    <string name="recordToast">Recording...</string>
+</resources>
