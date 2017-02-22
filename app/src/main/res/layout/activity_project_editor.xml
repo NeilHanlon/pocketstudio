@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_project_viewer"
+    android:text="Project"
+    android:label="@+id/activity_project_viewer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.wit.mobileapp.pocketstudio.ProjectEditor">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:id="@+id/undoRegion"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="0.30"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/colorPrimaryDark">
+
+            <ImageButton
+                android:id="@+id/undoButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/pvundobutton"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mediaControlRegion"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="0.40"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/recordColor">
+
+            <RelativeLayout
+                android:id="@+id/mediaControl"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/mediaControl">
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/timerRegion"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="0.30"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/colorPrimaryDark">
+
+            <TextView
+                android:id="@+id/timer"
+                android:text="00:00:00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:typeface="normal"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#3d3d3d</color>
     <color name="colorAccent">#de812b</color>
     <color name="recordColor">#d74545</color>
+    <color name="mediaControl">#2d2d2d</color>
 </resources>
