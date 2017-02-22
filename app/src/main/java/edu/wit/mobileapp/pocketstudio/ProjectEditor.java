@@ -22,7 +22,7 @@ public class ProjectEditor extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_viewer);
+        setContentView(R.layout.activity_project_editor);
 
         AUDIO_FILE= Environment.getExternalStorageDirectory()+"/audiorecorder.3gpp";
 
