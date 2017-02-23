@@ -9,9 +9,17 @@
     android:layout_height="match_parent"
     tools:context="edu.wit.mobileapp.pocketstudio.ProjectEditor">
 
+    <RelativeLayout
+        android:layout_width="110dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomBar"
+        android:background="@drawable/meterborder">
+
+    </RelativeLayout>
+
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/bottomBar"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true">
@@ -20,14 +28,14 @@
             android:id="@+id/undoRegion"
             android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_weight="0.30"
+            android:layout_weight="0.25"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@color/colorPrimaryDark">
 
             <ImageButton
                 android:id="@+id/undoButton"
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="30dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/pvundobutton"/>
@@ -38,18 +46,46 @@
             android:id="@+id/mediaControlRegion"
             android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_weight="0.40"
+            android:layout_weight="0.50"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:background="@color/recordColor">
+            android:background="@color/colorPrimaryDark">
 
             <RelativeLayout
                 android:id="@+id/mediaControl"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@color/mediaControl">
+                android:paddingLeft="27dp"
+                android:paddingRight="27dp"
+                android:background="@drawable/mediacontrol">
+
+                <ImageButton
+                    android:id="@+id/backToZeroButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/pvbackzerobutton"/>
+
+                <ImageButton
+                    android:id="@+id/playButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/pvplaybutton"/>
+
+                <ImageButton
+                    android:id="@+id/recordButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/pvrecordbutton"/>
+
             </RelativeLayout>
 
 
@@ -60,7 +96,7 @@
             android:id="@+id/timerRegion"
             android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_weight="0.30"
+            android:layout_weight="0.25"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@color/colorPrimaryDark">
@@ -72,9 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:typeface="normal"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"/>
-
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"/>
         </RelativeLayout>
 
     </LinearLayout>
