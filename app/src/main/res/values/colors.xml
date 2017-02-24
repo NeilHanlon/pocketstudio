@@ -6,4 +6,5 @@
     <color name="recordColor">#d74545</color>
     <color name="mediaControl">#2d2d2d</color>
     <color name="meterGray">#C4C3C3</color>
+    <color name="white">#ffffff</color>
 </resources>

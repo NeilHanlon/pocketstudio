@@ -6,5 +6,6 @@
     <string name="play">Play</string>
     <string name="delete">Delete</string>
     <string name="recordToast">Recording...</string>
-    <string name="title_activity_pocket_studio">PocketStudio</string>
+    <string name="title_activity_pocket_studio">Pocket Studio</string>
+    <string name="project">My project</string>
 </resources>

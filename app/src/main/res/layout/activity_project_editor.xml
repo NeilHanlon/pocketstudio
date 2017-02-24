@@ -4,18 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_project_viewer"
     android:text="Project"
-    android:label="@+id/activity_project_viewer"
+    android:label="@+id/activity_project_editor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.wit.mobileapp.pocketstudio.ProjectEditor">
-
-    <RelativeLayout
-        android:layout_width="110dp"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar"
-        android:background="@drawable/meterborder">
-
-    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/bottomBar"
@@ -120,8 +112,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
-
-
     </RelativeLayout>
 
 </RelativeLayout>

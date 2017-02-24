@@ -11,17 +11,19 @@
         //permissions
         <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-        <activity android:name=".ProjectEditor">
+        <activity
+            android:name=".ProjectEditor"
+            android:label="@string/project">
+
+        </activity>
+        <activity
+            android:name=".PocketStudioMain"
+            android:label="@string/title_activity_pocket_studio">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".PocketStudio"
-            android:label="@string/title_activity_pocket_studio"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

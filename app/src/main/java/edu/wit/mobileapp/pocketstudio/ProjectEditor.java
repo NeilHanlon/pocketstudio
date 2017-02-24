@@ -1,5 +1,6 @@
 package edu.wit.mobileapp.pocketstudio;
 
+import android.app.ActionBar;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -14,11 +15,12 @@ import com.roughike.bottombar.*;
 
 public class ProjectEditor extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_editor);
-
 
     }
 
