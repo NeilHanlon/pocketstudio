@@ -6,5 +6,7 @@
     <color name="recordColor">#d74545</color>
     <color name="mediaControl">#2d2d2d</color>
     <color name="meterGray">#C4C3C3</color>
+    <color name="inactive">#999999</color>
     <color name="white">#ffffff</color>
+    <color name="projectSections">#6b6a6a</color>
 </resources>

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 /**
  * Created by Matt on 2/23/17.
  */
-public class groupsFragment extends Fragment {
+public class GroupsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

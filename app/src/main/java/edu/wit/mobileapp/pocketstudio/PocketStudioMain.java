@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -31,7 +30,7 @@ public class PocketStudioMain extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
-        /*tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -44,7 +43,7 @@ public class PocketStudioMain extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
-        });*/
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +65,9 @@ public class PocketStudioMain extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return new projectsFragment();
+                    return new ProjectsFragment();
                 case 1:
-                    return new groupsFragment();
+                    return new GroupsFragment();
                 default:
                     return null;
             }

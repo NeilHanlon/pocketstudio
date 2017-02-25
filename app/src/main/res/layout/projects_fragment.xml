@@ -3,11 +3,132 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="projects fragment"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:paddingTop="50dp"
-        android:id="@+id/testText" />
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/myProjectsCategory"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/projectSections">
+
+            <RelativeLayout
+                android:id="@+id/projectsExpandCollapse"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/projectsExpandCollapseImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_expandcollapse"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/myProjectsSection"
+                android:text="My Projects"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/myProjectsContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/myProjEmptyText"
+                    android:lines="2"
+                    android:text="Once you create a project,\n you'll see it listed here."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="80dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <ListView
+                    android:id="@+id/myProjectsListview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </ListView>
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/sharedProjectsCategory"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/projectSections">
+
+            <RelativeLayout
+                android:id="@+id/sharedExpandCollapse"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/sharedExpandCollapseImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_expandcollapse"/>
+            </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/sharedProjectsSection"
+                    android:text="Shared with me"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sharedProjectsContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sharedProjEmptyText"
+                android:lines="2"
+                android:text="Once you create a project,\n you'll see it listed here."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="80dp"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <ListView
+                android:id="@+id/sharedProjectsListview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ListView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
 </LinearLayout>
