@@ -26,8 +26,8 @@ public class ProjectsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View myInflatedView = inflater.inflate(R.layout.projects_fragment,container,false);
 
+        View myInflatedView = inflater.inflate(R.layout.projects_fragment,container,false);
 
         //MY PROJECTS SECTION
         ListView projectsListView = (ListView) myInflatedView.findViewById(R.id.myProjectsListview);
@@ -36,17 +36,17 @@ public class ProjectsFragment extends Fragment {
         final ImageView projectsExpandCollapseImage = (ImageView) myInflatedView.findViewById(R.id.projectsExpandCollapseImage);
         final LinearLayout myProjectsContent = (LinearLayout) myInflatedView.findViewById(R.id.myProjectsContent);
 
-
-
         projectExpandCollapse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (isMyProjectsHidden) {
-                    projectsExpandCollapseImage.animate().rotation(0).start();
+                    //projectsExpandCollapseImage.animate().rotation(0).start();
+                    projectsExpandCollapseImage.setRotation(0);
                     myProjectsContent.setVisibility(View.VISIBLE);
 
                 }
                 else {
-                    projectsExpandCollapseImage.animate().rotation(180).start();
+                    //projectsExpandCollapseImage.animate().rotation(180).start();
+                    projectsExpandCollapseImage.setRotation(180);
                     myProjectsContent.setVisibility(View.GONE);
                 }
                 isMyProjectsHidden = !isMyProjectsHidden;
@@ -63,12 +63,14 @@ public class ProjectsFragment extends Fragment {
         sharedExpandCollapse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (isSharedProjectsHidden) {
-                    sharedExpandCollapseImage.animate().rotation(0).start();
+                    //sharedExpandCollapseImage.animate().rotation(0).start();
+                    sharedExpandCollapseImage.setRotation(0);
                     sharedProjectsContent.setVisibility(View.VISIBLE);
 
                 }
                 else {
-                    sharedExpandCollapseImage.animate().rotation(180).start();
+                    //sharedExpandCollapseImage.animate().rotation(180).start();
+                    sharedExpandCollapseImage.setRotation(180);
                     sharedProjectsContent.setVisibility(View.GONE);
                 }
                 isSharedProjectsHidden = !isSharedProjectsHidden;
