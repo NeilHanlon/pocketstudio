@@ -3,6 +3,7 @@ package edu.wit.mobileapp.pocketstudio;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class ProjectsFragment extends Fragment {
 
     public static boolean isMyProjectsHidden = false;
     public static boolean isSharedProjectsHidden = false;
+    private static final String TAG = ProjectsFragment.class.getName();
 
 
     @Nullable
@@ -36,18 +38,16 @@ public class ProjectsFragment extends Fragment {
         final ImageView projectsExpandCollapseImage = (ImageView) myInflatedView.findViewById(R.id.projectsExpandCollapseImage);
         final LinearLayout myProjectsContent = (LinearLayout) myInflatedView.findViewById(R.id.myProjectsContent);
 
+        final int myProjectsHeight = (int) myProjectsContent.getMeasuredHeight();
+
         projectExpandCollapse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (isMyProjectsHidden) {
                     projectsExpandCollapseImage.animate().rotation(0).start();
-                    //projectsExpandCollapseImage.setRotation(0);
                     myProjectsContent.setVisibility(View.VISIBLE);
-
-
                 }
                 else {
                     projectsExpandCollapseImage.animate().rotation(180).start();
-                    //projectsExpandCollapseImage.setRotation(180);
                     myProjectsContent.setVisibility(View.GONE);
                 }
                 isMyProjectsHidden = !isMyProjectsHidden;
@@ -61,6 +61,8 @@ public class ProjectsFragment extends Fragment {
         final ImageView sharedExpandCollapseImage = (ImageView) myInflatedView.findViewById(R.id.sharedExpandCollapseImage);
         final LinearLayout sharedProjectsContent = (LinearLayout) myInflatedView.findViewById(R.id.sharedProjectsContent);
 
+        final int sharedProjectsHeight = (int) sharedProjectsContent.getMeasuredHeight();
+
         sharedExpandCollapse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (isSharedProjectsHidden) {
@@ -68,32 +70,17 @@ public class ProjectsFragment extends Fragment {
                     //sharedExpandCollapseImage.setRotation(0);
                     sharedProjectsContent.setVisibility(View.VISIBLE);
 
+
                 }
                 else {
                     sharedExpandCollapseImage.animate().rotation(180).start();
                     //sharedExpandCollapseImage.setRotation(180);
                     sharedProjectsContent.setVisibility(View.GONE);
+
                 }
                 isSharedProjectsHidden = !isSharedProjectsHidden;
             }
         });
-
-        private void collapse(final View view) {
-            view.setPivotY(0);
-            view.animate().scaleY(1/view.getHeight()).setDuration(1000).withEndAction(new Runnable() {
-                @Override public void run() {
-                    view.setVisibility(View.GONE);
-                }
-            });
-        }
-
-        private void expand(View view, int height) {
-            float scaleFactor = height / view.getHeight();
-
-            view.setVisibility(View.VISIBLE);
-            view.setPivotY(0);
-            view.animate().scaleY(scaleFactor).setDuration(1000);
-        }
 
         return myInflatedView;
     }

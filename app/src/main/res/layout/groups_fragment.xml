@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/content_white">
 
-    <TextView
-        android:text="groups fragment"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:paddingTop="50dp"
-        android:id="@+id/testText" />
+        android:background="@color/white"
+        android:elevation="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_group"
+            android:scaleX="4"
+            android:scaleY="4"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/add_friends"
+            android:lines="4"
+            android:text="Add friends to edit and share\nprojects with others!\n\nYour groups will appear here."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:paddingTop="40dp"
+            android:paddingBottom="60dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+        <ListView
+            android:id="@+id/myProjectsListview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
 </LinearLayout>
