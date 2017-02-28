@@ -34,7 +34,7 @@ include rules.ninja
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/Matt/AndroidStudioProjects/pocketstudioOld/app/.externalNativeBuild/cmake/debug/mips && /Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/debug/mips && /Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 build edit_cache: phony CMakeFiles/edit_cache.util
@@ -43,7 +43,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/Matt/AndroidStudioProjects/pocketstudioOld/app/.externalNativeBuild/cmake/debug/mips && /Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake -H/Users/Matt/AndroidStudioProjects/pocketstudioOld/app -B/Users/Matt/AndroidStudioProjects/pocketstudioOld/app/.externalNativeBuild/cmake/debug/mips
+  COMMAND = cd /Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/debug/mips && /Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake -H/Users/Matt/AndroidStudioProjects/pocketstudio/app -B/Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/debug/mips
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -56,7 +56,7 @@ build CMakeFiles/native-lib.dir/src/main/cpp/native-lib.cpp.o: CXX_COMPILER__nat
   DEP_FILE = CMakeFiles/native-lib.dir/src/main/cpp/native-lib.cpp.o.d
   FLAGS = -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mips32 -Wa,--noexecstack -Wformat -Werror=format-security -fno-exceptions -fno-rtti -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mips32 -Wa,--noexecstack -Wformat -Werror=format-security -fno-exceptions -fno-rtti  -O0 -fno-limit-debug-info -O0 -fno-limit-debug-info  -fPIC
   INCLUDES = -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/mips/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward
-  IN_ABS = /Users/Matt/AndroidStudioProjects/pocketstudioOld/app/src/main/cpp/native-lib.cpp
+  IN_ABS = /Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/cpp/native-lib.cpp
   OBJECT_DIR = CMakeFiles/native-lib.dir
   OBJECT_FILE_DIR = CMakeFiles/native-lib.dir/src/main/cpp
 

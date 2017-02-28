@@ -8,4 +8,8 @@
     <string name="recordToast">Recording...</string>
     <string name="title_activity_pocket_studio">Pocket Studio</string>
     <string name="project">My project</string>
+    <string name="my_projects">My Projects</string>
+    <string name="no_shared_projects">Once a project is shared with you,\n you\'ll see it listed here.</string>
+    <string name="no_my_projects">Once you create a project,\n you\'ll see it listed here.</string>
+    <string name="shared_with_me">Shared with me</string>
 </resources>

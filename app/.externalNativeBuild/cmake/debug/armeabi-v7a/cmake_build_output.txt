@@ -12,4 +12,10 @@
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/Matt/AndroidStudioProjects/pocketstudioOld/app/.externalNativeBuild/cmake/debug/armeabi-v7a
+-- Build files have been written to: /Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/debug/armeabi-v7a
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    PATH_TO_SUPERPOWERED
+
+

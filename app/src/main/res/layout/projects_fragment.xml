@@ -35,12 +35,13 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/ic_expandcollapse"/>
+                        android:background="@drawable/ic_expandcollapse"
+                        android:contentDescription="" />
                 </RelativeLayout>
 
                 <TextView
                     android:id="@+id/myProjectsSection"
-                    android:text="My Projects"
+                    android:text="@string/my_projects"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -55,11 +56,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@color/white">
+                    android:background="@color/white"
+                    android:animateLayoutChanges="true">
                     <TextView
                         android:id="@+id/myProjEmptyText"
                         android:lines="2"
-                        android:text="Once you create a project,\n you'll see it listed here."
+                        android:text="@string/no_my_projects"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
@@ -106,7 +108,7 @@
 
                     <TextView
                         android:id="@+id/sharedProjectsSection"
-                        android:text="Shared with me"
+                        android:text="@string/shared_with_me"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
@@ -123,11 +125,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:animateLayoutChanges="true">
                 <TextView
                     android:id="@+id/sharedProjEmptyText"
                     android:lines="2"
-                    android:text="Once a project is shared with you,\n you'll see it listed here."
+                    android:text="@string/no_shared_projects"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"

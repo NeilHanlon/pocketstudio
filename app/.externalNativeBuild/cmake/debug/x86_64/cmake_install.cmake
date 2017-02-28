@@ -1,4 +1,4 @@
-# Install script for directory: /Users/Matt/AndroidStudioProjects/pocketstudioOld/app
+# Install script for directory: /Users/Matt/AndroidStudioProjects/pocketstudio/app
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/Matt/AndroidStudioProjects/pocketstudioOld/app/.externalNativeBuild/cmake/debug/x86_64/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/debug/x86_64/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

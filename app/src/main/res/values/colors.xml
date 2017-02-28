@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3d3d3d</color>
     <color name="colorPrimaryDark">#3d3d3d</color>
     <color name="colorAccent">#de812b</color>
+    <color name="darkAccent">#a76121</color>
     <color name="recordColor">#d74545</color>
     <color name="mediaControl">#2d2d2d</color>
     <color name="meterGray">#C4C3C3</color>

@@ -1,14 +1,21 @@
 Executable : /Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake
 arguments : 
--H/Users/Matt/AndroidStudioProjects/pocketstudioOld/app
--B/Users/Matt/AndroidStudioProjects/pocketstudioOld/app/.externalNativeBuild/cmake/debug/arm64-v8a
+-H/Users/Matt/AndroidStudioProjects/pocketstudio/app
+-B/Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/debug/arm64-v8a
 -GAndroid Gradle - Ninja
 -DANDROID_ABI=arm64-v8a
 -DANDROID_NDK=/Users/Matt/Library/Android/sdk/ndk-bundle
--DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/Matt/AndroidStudioProjects/pocketstudioOld/app/build/intermediates/cmake/debug/obj/arm64-v8a
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/Matt/AndroidStudioProjects/pocketstudio/app/build/intermediates/cmake/debug/obj/arm64-v8a
 -DCMAKE_BUILD_TYPE=Debug
 -DCMAKE_MAKE_PROGRAM=/Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/ninja
 -DCMAKE_TOOLCHAIN_FILE=/Users/Matt/Library/Android/sdk/ndk-bundle/build/cmake/android.toolchain.cmake
 -DANDROID_NATIVE_API_LEVEL=21
+-DCMAKE_C_FLAGS=-O3 -fsigned-char
+-DCMAKE_CXX_FLAGS=-fsigned-char -I /Users/Matt/Documents/SuperpoweredSDK
+-DANDROID_PLATFORM=android-16
+-DANDROID_TOOLCHAIN=clang
+-DANDROID_ARM_NEON=TRUE
+-DANDROID_STL=gnustl_static
+-DPATH_TO_SUPERPOWERED:STRING=/Users/Matt/Documents/SuperpoweredSDK
 jvmArgs : 
 

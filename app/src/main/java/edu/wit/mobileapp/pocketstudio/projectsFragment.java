@@ -39,14 +39,15 @@ public class ProjectsFragment extends Fragment {
         projectExpandCollapse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (isMyProjectsHidden) {
-                    //projectsExpandCollapseImage.animate().rotation(0).start();
-                    projectsExpandCollapseImage.setRotation(0);
+                    projectsExpandCollapseImage.animate().rotation(0).start();
+                    //projectsExpandCollapseImage.setRotation(0);
                     myProjectsContent.setVisibility(View.VISIBLE);
+
 
                 }
                 else {
-                    //projectsExpandCollapseImage.animate().rotation(180).start();
-                    projectsExpandCollapseImage.setRotation(180);
+                    projectsExpandCollapseImage.animate().rotation(180).start();
+                    //projectsExpandCollapseImage.setRotation(180);
                     myProjectsContent.setVisibility(View.GONE);
                 }
                 isMyProjectsHidden = !isMyProjectsHidden;
@@ -63,19 +64,36 @@ public class ProjectsFragment extends Fragment {
         sharedExpandCollapse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (isSharedProjectsHidden) {
-                    //sharedExpandCollapseImage.animate().rotation(0).start();
-                    sharedExpandCollapseImage.setRotation(0);
+                    sharedExpandCollapseImage.animate().rotation(0).start();
+                    //sharedExpandCollapseImage.setRotation(0);
                     sharedProjectsContent.setVisibility(View.VISIBLE);
 
                 }
                 else {
-                    //sharedExpandCollapseImage.animate().rotation(180).start();
-                    sharedExpandCollapseImage.setRotation(180);
+                    sharedExpandCollapseImage.animate().rotation(180).start();
+                    //sharedExpandCollapseImage.setRotation(180);
                     sharedProjectsContent.setVisibility(View.GONE);
                 }
                 isSharedProjectsHidden = !isSharedProjectsHidden;
             }
         });
+
+        private void collapse(final View view) {
+            view.setPivotY(0);
+            view.animate().scaleY(1/view.getHeight()).setDuration(1000).withEndAction(new Runnable() {
+                @Override public void run() {
+                    view.setVisibility(View.GONE);
+                }
+            });
+        }
+
+        private void expand(View view, int height) {
+            float scaleFactor = height / view.getHeight();
+
+            view.setVisibility(View.VISIBLE);
+            view.setPivotY(0);
+            view.animate().scaleY(scaleFactor).setDuration(1000);
+        }
 
         return myInflatedView;
     }
