@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:elevation="5dp">
-
+TODO
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         <TextView
             android:id="@+id/add_friends"
             android:lines="4"
-            android:text="Add friends to edit and share\nprojects with others!\n\nYour groups will appear here."
+            android:text="Add friends to edit and share\nprojects with others!\n\nYour groups and messages will appear here."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"

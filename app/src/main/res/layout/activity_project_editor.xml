@@ -9,6 +9,124 @@
     android:layout_height="match_parent"
     tools:context="edu.wit.mobileapp.pocketstudio.ProjectEditor">
 
+    <RelativeLayout
+        android:id="@+id/meterBar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/inactive">
+
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/content_white"
+        android:layout_below="@id/meterBar">
+
+            <LinearLayout
+                android:id="@+id/track1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="15dp"
+
+                
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Track 1"
+                    android:paddingTop="10dp"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_track_settings"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/track2"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="15dp"
+                android:background="@color/white">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Track 2"
+                    android:paddingTop="10dp"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_track_settings"
+                    android:layout_gravity="center"
+                        />
+            </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/track3"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Track 3"
+                android:paddingTop="10dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/colorPrimaryDark"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_track_settings"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/track4"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="15dp"
+            android:background="@color/white">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Track 4"
+                android:paddingTop="10dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/colorPrimaryDark"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_track_settings"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/bottomBar"
         android:orientation="horizontal"
@@ -106,13 +224,14 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/contentContainer"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-    </RelativeLayout>
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
 
