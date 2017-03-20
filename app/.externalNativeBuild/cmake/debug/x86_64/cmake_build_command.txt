@@ -1,6 +1,6 @@
 Executable : /Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake
 arguments : 
--H/Users/Matt/AndroidStudioProjects/pocketstudio/app
+-H/Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/jni
 -B/Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/debug/x86_64
 -GAndroid Gradle - Ninja
 -DANDROID_ABI=x86_64
@@ -11,11 +11,11 @@ arguments :
 -DCMAKE_TOOLCHAIN_FILE=/Users/Matt/Library/Android/sdk/ndk-bundle/build/cmake/android.toolchain.cmake
 -DANDROID_NATIVE_API_LEVEL=21
 -DCMAKE_C_FLAGS=-O3 -fsigned-char
--DCMAKE_CXX_FLAGS=-fsigned-char -I /Users/Matt/Documents/SuperpoweredSDK
+-DCMAKE_CXX_FLAGS=-fsigned-char -I/Library/Audio/SuperpoweredSDK/Superpowered
 -DANDROID_PLATFORM=android-16
 -DANDROID_TOOLCHAIN=clang
 -DANDROID_ARM_NEON=TRUE
 -DANDROID_STL=gnustl_static
--DPATH_TO_SUPERPOWERED:STRING=/Users/Matt/Documents/SuperpoweredSDK
+-DPATH_TO_SUPERPOWERED:STRING=/Library/Audio/SuperpoweredSDK/Superpowered
 jvmArgs : 
 

@@ -1,5 +1,6 @@
 # ninja log v5
-0	122	0	CMakeFiles/native-lib.dir/src/main/cpp/native-lib.cpp.o	6f9db2a94d3f8e99
-122	146	0	../../../../build/intermediates/cmake/debug/obj/x86_64/libnative-lib.so	8c67b6f58fc431fd
-1	111	0	CMakeFiles/native-lib.dir/src/main/cpp/native-lib.cpp.o	6f9db2a94d3f8e99
-111	157	0	../../../../build/intermediates/cmake/debug/obj/x86_64/libnative-lib.so	8c67b6f58fc431fd
+0	65	0	CMakeFiles/SuperpoweredExample.dir/Library/Audio/SuperpoweredSDK/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o	3fd8842f021c69db
+0	69	0	CMakeFiles/SuperpoweredExample.dir/ProjectEditor.cpp.o	362ad66ea3c33d23
+70	130	0	/Users/Matt/AndroidStudioProjects/pocketstudio/app/build/intermediates/cmake/debug/obj/x86_64/libSuperpoweredExample.so	2dcc923ab2402e00
+0	140	0	CMakeFiles/SuperpoweredExample.dir/ProjectEditor.cpp.o	362ad66ea3c33d23
+140	214	0	/Users/Matt/AndroidStudioProjects/pocketstudio/app/build/intermediates/cmake/debug/obj/x86_64/libSuperpoweredExample.so	2dcc923ab2402e00

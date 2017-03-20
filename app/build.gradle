@@ -1,8 +1,13 @@
 apply plugin: 'com.android.application'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def superpowered_sdk_path = properties.getProperty('superpowered.dir')
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
     defaultConfig {
         applicationId "edu.wit.mobileapp.pocketstudio"
         minSdkVersion 21
@@ -17,9 +22,9 @@ android {
 
         externalNativeBuild {
             cmake {
-                arguments '-DANDROID_PLATFORM=android-16', '-DANDROID_TOOLCHAIN=clang', '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=gnustl_static', "-DPATH_TO_SUPERPOWERED:STRING=/Users/Matt/Documents/SuperpoweredSDK"
+                arguments '-DANDROID_PLATFORM=android-16', '-DANDROID_TOOLCHAIN=clang', '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=gnustl_static', "-DPATH_TO_SUPERPOWERED:STRING=/Library/Audio/SuperpoweredSDK/Superpowered"
                 cFlags '-O3', '-fsigned-char' // full optimization, char data type is signed
-                cppFlags '-fsigned-char', "-I /Users/Matt/Documents/SuperpoweredSDK"
+                cppFlags '-fsigned-char', "-I${superpowered_sdk_path}"
             }
         }
     }
@@ -38,8 +43,8 @@ android {
 
     externalNativeBuild {
         cmake {
-            path 'CMakeLists.txt'
-            //path 'src/main/jni/CMakeLists.txt'
+            //path 'CMakeLists.txt'
+            path 'src/main/jni/CMakeLists.txt'
 
         }
     }

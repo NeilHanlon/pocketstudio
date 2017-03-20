@@ -1,4 +1,4 @@
-# Install script for directory: /Users/Matt/AndroidStudioProjects/pocketstudio/app
+# Install script for directory: /Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/jni
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

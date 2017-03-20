@@ -1,6 +1,9 @@
 
 {
-	"buildFiles" : [ "/Users/Matt/AndroidStudioProjects/pocketstudio/app/CMakeLists.txt" ],
+	"buildFiles" : 
+	[
+		"/Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/jni/CMakeLists.txt"
+	],
 	"cleanCommands" : 
 	[
 		"/Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake --build /Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/release/x86_64 --target clean"
@@ -8,22 +11,28 @@
 	"cppFileExtensions" : [ "cpp" ],
 	"libraries" : 
 	{
-		"native-lib-Release-x86_64" : 
+		"SuperpoweredExample-Release-x86_64" : 
 		{
 			"abi" : "x86_64",
-			"artifactName" : "native-lib",
-			"buildCommand" : "/Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake --build /Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/release/x86_64 --target native-lib",
+			"artifactName" : "SuperpoweredExample",
+			"buildCommand" : "/Users/Matt/Library/Android/sdk/cmake/3.6.3155560/bin/cmake --build /Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/release/x86_64 --target SuperpoweredExample",
 			"buildType" : "release",
 			"files" : 
 			[
 				
 				{
-					"flags" : "  -target x86_64-none-linux-android -gcc-toolchain /Users/Matt/Library/Android/sdk/ndk-bundle/toolchains/x86_64-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/Matt/Library/Android/sdk/ndk-bundle/platforms/android-21/arch-x86_64  -Dnative_lib_EXPORTS -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86_64/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -fno-exceptions -fno-rtti -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -fno-exceptions -fno-rtti -fsigned-char -I /Users/Matt/Documents/SuperpoweredSDK -O2 -DNDEBUG -O2 -DNDEBUG  -fPIC    -c ",
-					"src" : "/Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/cpp/native-lib.cpp",
+					"flags" : "  --target=x86_64-none-linux-android --gcc-toolchain=/Users/Matt/Library/Android/sdk/ndk-bundle/toolchains/x86_64-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/Matt/Library/Android/sdk/ndk-bundle/platforms/android-21/arch-x86_64  -DSuperpoweredExample_EXPORTS -I/Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/jni/src/main/jni -I/Library/Audio/SuperpoweredSDK/Superpowered -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86_64/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -fsigned-char -I/Library/Audio/SuperpoweredSDK/Superpowered -O2 -DNDEBUG -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "/Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/jni/ProjectEditor.cpp",
+					"workingDirectory" : "/Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/release/x86_64"
+				},
+				
+				{
+					"flags" : "  --target=x86_64-none-linux-android --gcc-toolchain=/Users/Matt/Library/Android/sdk/ndk-bundle/toolchains/x86_64-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/Matt/Library/Android/sdk/ndk-bundle/platforms/android-21/arch-x86_64  -DSuperpoweredExample_EXPORTS -I/Users/Matt/AndroidStudioProjects/pocketstudio/app/src/main/jni/src/main/jni -I/Library/Audio/SuperpoweredSDK/Superpowered -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86_64/include -isystem /Users/Matt/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -fsigned-char -I/Library/Audio/SuperpoweredSDK/Superpowered -O2 -DNDEBUG -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "/Library/Audio/SuperpoweredSDK/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp",
 					"workingDirectory" : "/Users/Matt/AndroidStudioProjects/pocketstudio/app/.externalNativeBuild/cmake/release/x86_64"
 				}
 			],
-			"output" : "/Users/Matt/AndroidStudioProjects/pocketstudio/app/build/intermediates/cmake/release/obj/x86_64/libnative-lib.so",
+			"output" : "/Users/Matt/AndroidStudioProjects/pocketstudio/app/build/intermediates/cmake/release/obj/x86_64/libSuperpoweredExample.so",
 			"toolchain" : "1391313479099490664"
 		}
 	},
