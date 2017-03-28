@@ -61,7 +61,8 @@
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
                     android:textColorHighlight="@color/white"
-                    android:textColorHint="@color/white"/>
+                    android:textColorHint="@color/white"
+                    android:backgroundTint="@color/white"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -82,7 +83,8 @@
                     android:maxLines="1"
                     android:textColorHint="@color/white"
                     android:textColor="@color/white"
-                    android:textColorLink="@color/white"/>
+                    android:textColorLink="@color/white"
+                    android:backgroundTint="@color/white"/>
 
             </android.support.design.widget.TextInputLayout>
 
