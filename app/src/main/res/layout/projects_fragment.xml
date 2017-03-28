@@ -16,6 +16,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/loginTestPageButton"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login test page"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@color/recordColor"/>
 
             <LinearLayout
                 android:id="@+id/myProjectsCategory"
@@ -35,8 +44,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/ic_expandcollapse"
-                        android:contentDescription="" />
+                        android:background="@drawable/ic_expandcollapse"/>
                 </RelativeLayout>
 
                 <TextView
