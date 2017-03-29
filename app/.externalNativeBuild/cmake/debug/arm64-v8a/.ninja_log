@@ -1,6 +1,0 @@
-# ninja log v5
-0	68	0	CMakeFiles/SuperpoweredExample.dir/Library/Audio/SuperpoweredSDK/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o	1d59420c9b0afff4
-0	75	0	CMakeFiles/SuperpoweredExample.dir/ProjectEditor.cpp.o	e52fc15909677f62
-75	144	0	/Users/Matt/AndroidStudioProjects/pocketstudio/app/build/intermediates/cmake/debug/obj/arm64-v8a/libSuperpoweredExample.so	58e62c5e9029c1bf
-1	146	0	CMakeFiles/SuperpoweredExample.dir/ProjectEditor.cpp.o	e52fc15909677f62
-146	228	0	/Users/Matt/AndroidStudioProjects/pocketstudio/app/build/intermediates/cmake/debug/obj/arm64-v8a/libSuperpoweredExample.so	58e62c5e9029c1bf
