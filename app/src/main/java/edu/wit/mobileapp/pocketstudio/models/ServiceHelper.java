@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceHelper {
 
-    private static final String BASE_URL = "http://localhost:5000/";
+    private static final String BASE_URL = "http://drop1.neilhanlon.me:5000/";
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
