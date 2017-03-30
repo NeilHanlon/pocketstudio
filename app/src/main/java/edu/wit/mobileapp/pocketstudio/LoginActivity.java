@@ -31,7 +31,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import edu.wit.mobileapp.pocketstudio.models.ServiceHelper;
+import edu.wit.mobileapp.pocketstudio.models.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -313,23 +320,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            final User[] user = new User[1];
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                User.UserService userService = ServiceHelper.createService(User.UserService.class);
+                Call<User> UserCall = userService.getUserByEmail(mEmail);
+                UserCall.enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        // The network call was a success and we got a response
+                        user[0] = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        return;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+            return user[0].authenticate(mPassword);
 
-            // TODO: register the new account here.
-            return true;
         }
 
         @Override

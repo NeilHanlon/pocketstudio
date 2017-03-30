@@ -1,6 +1,7 @@
 package edu.wit.mobileapp.pocketstudio.models;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,7 +23,7 @@ public class User{
     public List<String> groups;
     public List<String> projects;
 
-    public User(String name, String password, String email) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -32,6 +33,10 @@ public class User{
     public void printUser()
     {
         System.out.printf("ID: %s\nName: %s\nPassword: %s\nEmail: %s\n", this.id, this.name, this.password, this.email);
+    }
+
+    public boolean authenticate(String mPassword) {
+        return this.password.equals(mPassword);
     }
 
     public interface UserService {
@@ -46,7 +51,7 @@ public class User{
         );
 
         @PUT("/v1/user/{id}")
-        Call<User> createUser(
+        Call<User> updateUser(
                 @Path("id") String id,
                 @Body User user
         );
