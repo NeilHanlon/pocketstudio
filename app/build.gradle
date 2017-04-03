@@ -18,6 +18,7 @@ android {
 
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64' // these platforms cover 99% percent of all Android devices
+            ldLibs "log"
         }
 
         externalNativeBuild {
@@ -43,7 +44,6 @@ android {
 
     externalNativeBuild {
         cmake {
-            //path 'CMakeLists.txt'
             path 'src/main/jni/CMakeLists.txt'
 
         }

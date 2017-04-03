@@ -11,9 +11,7 @@
 
 #include "ProjectEditor.h"
 #include <SuperpoweredAdvancedAudioPlayer.h>
-#include <SuperpoweredFilter.h>
-#include <SuperpoweredRoll.h>
-#include <SuperpoweredFlanger.h>
+#include <SuperpoweredReverb.h>
 #include <AndroidIO/SuperpoweredAndroidAudioIO.h>
 
 
@@ -24,11 +22,11 @@ using namespace std;
 
 static const float headroom = powf(10.0f, -HEADROOM_DECIBEL * 0.025f);
 
-class SuperpoweredExample {
+class Project {
 public:
 
-    SuperpoweredExample(unsigned int samplerate, unsigned int buffersize, const char *path, int fileAoffset, int fileAlength, int fileBoffset, int fileBlength);
-    ~SuperpoweredExample();
+    Project(unsigned int samplerate, unsigned int buffersize, const char *path, int fileAoffset, int fileAlength, int fileBoffset, int fileBlength);
+    ~Project();
 
     bool process(short int *output, unsigned int numberOfSamples);
     void onPlayPause(bool play);
@@ -40,39 +38,25 @@ public:
 
 private:
     SuperpoweredAndroidAudioIO *audioSystem;
-    SuperpoweredAdvancedAudioPlayer *playerA, *playerB;
-    SuperpoweredRoll *roll;
-    SuperpoweredFilter *filter;
-    SuperpoweredFlanger *flanger;
-    float *stereoBuffer;
-    unsigned char activeFx;
-    float crossValue, volA, volB;
-};
-
-class Project {
-public:
-    //Constructor
-    Project();
-
-    //Tracks are important I guess
-    class Track {
-    public:
-
-    private:
-        int gain, pan, verbWet;
-        bool mute, solo;
-        void setTrackSettings(int loadGain, int loadPan, int loadVerbWet, bool loadMute, bool loadSolo);
-    };
-
-
-private:
-    //Project variables
+    SuperpoweredAdvancedAudioPlayer *playerA, *playerB, *playerC, *playerD;
+    SuperpoweredReverb *reverb;
     string projectName;
     string ownerID;
     double projectLength;
     double currentTime;
     double lastEdited;
 
+    float *stereoBuffer;
+
+    int volA, volB, volC, volD;
+    int panA, panB, panC, panD;
+    int verbWetA, verbWetB, verbWetC, verbWetD;
+    bool muteA, muteB, muteC, muteD;
+    bool soloA, soloB, soloC, soloD;
+
+//void setTrackSettings(int loadGain, int loadPan, int loadVerbWet, bool loadMute, bool loadSolo);
+
 };
+
 
 #endif //POCKETSTUDIO_PROJECTEDITOR_H
