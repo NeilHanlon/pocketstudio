@@ -26,6 +26,7 @@
 
             <LinearLayout
                 android:id="@+id/track1"
+                android:onClick="click]\ableTrack1"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,6 +52,7 @@
 
             <LinearLayout
                 android:id="@+id/track2"
+                android:onClick="clickableTrack2"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +62,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Track 2"
+                    android:text="@string/track_2"
                     android:paddingTop="10dp"
                     android:textAlignment="center"
                     android:textSize="20sp"
@@ -76,6 +78,7 @@
 
         <LinearLayout
             android:id="@+id/track3"
+            android:onClick="clickableTrack3"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,7 +87,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Track 3"
+                android:text="@string/track_3"
                 android:paddingTop="10dp"
                 android:textAlignment="center"
                 android:textSize="20sp"
@@ -100,6 +103,7 @@
 
         <LinearLayout
             android:id="@+id/track4"
+            android:onClick="clickableTrack4"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,7 +113,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Track 4"
+                android:text="@string/track_4"
                 android:paddingTop="10dp"
                 android:textAlignment="center"
                 android:textSize="20sp"
@@ -155,8 +159,6 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="0.50"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:background="@color/colorPrimaryDark">
 
             <RelativeLayout
@@ -192,6 +194,7 @@
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:onClick="RecordButton"
                     android:background="@drawable/pvrecordbutton"/>
 
             </RelativeLayout>
