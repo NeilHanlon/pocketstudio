@@ -49,6 +49,13 @@ public class PocketStudioMain extends AppCompatActivity {
         String prefsname = prop.getProperty("pocketstudio.prefs_name", "pocketstudioprefs");
         settings = getSharedPreferences(prefsname, 0);
         userid = settings.getString("userid", null);
+
+        if(settings.getString("userid", null) == null) {
+            Intent gimmegimmesomelovin = new Intent();
+            gimmegimmesomelovin.setClass(this, LoginActivity.class);
+            startActivity(gimmegimmesomelovin);
+        }
+
         System.out.printf("User ID: %s", userid);
 
         super.onCreate(savedInstanceState);
