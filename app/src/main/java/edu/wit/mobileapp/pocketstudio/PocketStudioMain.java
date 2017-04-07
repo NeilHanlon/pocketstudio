@@ -2,6 +2,7 @@ package edu.wit.mobileapp.pocketstudio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -11,14 +12,36 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.Properties;
+
+import butterknife.ButterKnife;
+import butterknife.BindView;
+
 
 public class PocketStudioMain extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewPager;
+    String userid;
+    Properties prop = new Properties();
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            prop.load(getBaseContext().getAssets().open("pocketstudio.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String prefsname = prop.getProperty("pocketstudio.prefs_name", "pocketstudioprefs");
+        settings = getSharedPreferences(prefsname, 0);
+        userid = settings.getString("userid", null);
+        System.out.printf("User ID: %s", userid);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pocket_studio_main);
 
@@ -80,5 +103,13 @@ public class PocketStudioMain extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragments[position];
         }
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public SharedPreferences getSettings() {
+        return settings;
     }
 }

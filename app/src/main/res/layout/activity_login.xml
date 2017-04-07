@@ -14,27 +14,30 @@
     <!-- Login progress -->
 
     <RelativeLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="100">
+        android:layout_weight="29.74"
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
             android:text="pocketStudio"
             android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:layout_alignParentTop="true"
-            android:textSize="40dp"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_guitarshilouette"
-                android:scaleX="8"
-                android:scaleY="8"/>
+            android:textSize="40dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_guitarshilouette"
+            android:scaleX="6"
+            android:scaleY="6" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/login_form"
         android:orientation="vertical"
@@ -89,15 +92,25 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/login_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold"
+                android:background="@color/colorAccent"
+                android:text="@string/action_sign_in_short"
                 android:textColor="@color/white"
-                android:background="@color/colorAccent"/>
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/signup_button"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:text="@string/no_acct_create"
+                android:textAppearance="@style/BB_BottomBarBadge_Text" />
 
             <Button
                 android:id="@+id/backToProjects"

@@ -21,13 +21,13 @@ android {
             ldLibs "log"
         }
 
-        externalNativeBuild {
+        /*externalNativeBuild {
             cmake {
                 arguments '-DANDROID_PLATFORM=android-16', '-DANDROID_TOOLCHAIN=clang', '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=gnustl_static', "-DPATH_TO_SUPERPOWERED:STRING=${superpowered_sdk_path}"
                 cFlags '-O3', '-fsigned-char' // full optimization, char data type is signed
                 cppFlags '-fsigned-char', "-I${superpowered_sdk_path}"
             }
-        }
+        }*/
     }
     buildTypes {
         release {
@@ -42,11 +42,17 @@ android {
         }
     }
 
-    externalNativeBuild {
+    /*externalNativeBuild {
         cmake {
             path 'src/main/jni/CMakeLists.txt'
 
         }
+    }*/
+    lintOptions {
+        //checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 }
 
@@ -63,4 +69,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

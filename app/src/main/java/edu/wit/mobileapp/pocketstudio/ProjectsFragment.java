@@ -1,6 +1,7 @@
 package edu.wit.mobileapp.pocketstudio;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.Properties;
+
+import butterknife.BindView;
+
 /**
  * Created by Matt on 2/23/17.
  */
@@ -25,6 +31,7 @@ public class ProjectsFragment extends Fragment {
     public static boolean isMyProjectsHidden = false;
     public static boolean isSharedProjectsHidden = false;
     private static final String TAG = ProjectsFragment.class.getName();
+    Properties prop = new Properties();
 
 
     @Nullable

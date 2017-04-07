@@ -29,4 +29,5 @@
     <string name="track_2">Track 2</string>
     <string name="track_3">Track 3</string>
     <string name="track_4">Track 4</string>
+    <string name="no_acct_create">No account yet? Create one</string>
 </resources>
