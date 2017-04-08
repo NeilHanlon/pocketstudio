@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +40,11 @@ import java.util.Properties;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
+import edu.wit.mobileapp.pocketstudio.models.ServiceHelper;
+import edu.wit.mobileapp.pocketstudio.models.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class PocketStudioMain extends AppCompatActivity {
@@ -64,7 +70,8 @@ public class PocketStudioMain extends AppCompatActivity {
 
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
-    @BindView(R.id.desc) TextView _profile_description;
+    @BindView(R.id.userName) TextView _profileBoxUserName;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,7 @@ public class PocketStudioMain extends AppCompatActivity {
             gimmegimmesomelovin.setClass(this, LoginActivity.class);
             startActivity(gimmegimmesomelovin);
         }
+
 
         System.out.printf("User ID: %s", userid);
 
@@ -112,6 +120,9 @@ public class PocketStudioMain extends AppCompatActivity {
 
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ButterKnife.bind(this);
+
+        getCurrentUser();
 
         viewPager = (ViewPager) findViewById(R.id.pagerMain);
         viewPager.setAdapter(new CustomAdapter(getSupportFragmentManager(), getApplicationContext()));
@@ -403,5 +414,37 @@ public class PocketStudioMain extends AppCompatActivity {
 
             return view;
         }
+    }
+
+    public void getCurrentUser(){
+        User.UserService userService = ServiceHelper.createService(User.UserService.class);
+        Call<User> user = userService.get(settings.getString("userid", null));
+        user.enqueue(new Callback<User>() {
+            private User user;
+
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                // The network call was a success and we got a response
+                Log.d(TAG, "In Onresponse");
+                User user = response.body();
+                user.printUser();
+                setUser(user);
+                setTexts();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(PocketStudioMain.super.getBaseContext(), "Something went wrong retrieving user profile",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setTexts() {
+        Log.d(TAG, user.name);
+        _profileBoxUserName.setText(user.name);
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }

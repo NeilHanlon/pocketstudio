@@ -77,4 +77,6 @@
     <string name="save_profile">Save Profile</string>
     <string name="change_password">Change Password</string>
     <string name="delete_account">Delete Account</string>
+    <string name="potato_potato">Potato Potato</string>
+    <string name="view_profile">View Profile</string>
 </resources>

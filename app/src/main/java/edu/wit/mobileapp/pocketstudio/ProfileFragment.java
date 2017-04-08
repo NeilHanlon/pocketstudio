@@ -77,14 +77,14 @@ public class ProfileFragment extends Fragment {
             public void onResponse(Call<User> call, Response<User> response) {
                 // The network call was a success and we got a response
                 Toast.makeText(getActivity(), "Profile Updated!",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.d(TAG, "wat", t);
                 Toast.makeText(getActivity(), "Something went wrong",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
