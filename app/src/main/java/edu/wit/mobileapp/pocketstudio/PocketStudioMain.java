@@ -148,6 +148,7 @@ public class PocketStudioMain extends AppCompatActivity {
 
         // Populate the Navigtion Drawer with options
         mDrawerPane = (RelativeLayout) findViewById(R.id.drawerPane);
+        RelativeLayout mProfileBox = (RelativeLayout) findViewById(R.id.profileBox);
         mDrawerList = (ListView) findViewById(R.id.navList);
         DrawerListAdapter adapter = new DrawerListAdapter(this, mNavItems);
         mDrawerList.setAdapter(adapter);
@@ -178,6 +179,19 @@ public class PocketStudioMain extends AppCompatActivity {
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mProfileBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent profile = new Intent();
+                profile.setClass(PocketStudioMain.this, PreferencesActivity.class);
+                profile.setAction(Intent.ACTION_MAIN);
+                profile.addCategory(Intent.CATEGORY_LAUNCHER);
+                profile.putExtra("position", 3);
+                mDrawerLayout.closeDrawer(mDrawerPane);
+                startActivity(profile);
+            }
+        });
     }
 
     @Override
@@ -218,10 +232,13 @@ public class PocketStudioMain extends AppCompatActivity {
     * is selected.
     * */
     private void selectItemFromDrawer(int position) {
-        Intent travel = new Intent(this, PreferencesActivity.class);
-        travel.setAction(Intent.ACTION_MAIN);
-        travel.addCategory(Intent.CATEGORY_LAUNCHER);
-
+        Intent travel = null;
+        if (position != 0) {
+            travel = new Intent(this, PreferencesActivity.class);
+            travel.setAction(Intent.ACTION_MAIN);
+            travel.addCategory(Intent.CATEGORY_LAUNCHER);
+            travel.putExtra("position", position);
+        }
         /*
         Fragment fragment = new PreferencesFragment();
         ((CustomAdapter)viewPager.getAdapter()).getFragmentManager().beginTransaction()
@@ -229,11 +246,12 @@ public class PocketStudioMain extends AppCompatActivity {
                 .commit();*/
 
         mDrawerList.setItemChecked(position, true);
-        setTitle(mNavItems.get(position).mTitle);
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
-        startActivity(travel);
+        if (position != 0) {
+            startActivity(travel);
+        }
     }
 
     // Called when invalidateOptionsMenu() is invoked
