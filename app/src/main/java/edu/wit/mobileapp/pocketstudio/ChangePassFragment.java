@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,26 +31,24 @@ import retrofit2.Response;
  * Created by Neil on 4/8/2017.
  */
 
-public class ProfileFragment extends Fragment {
-    private static String TAG = ProfileFragment.class.getSimpleName();
+public class ChangePassFragment extends Fragment {
+    private static String TAG = ChangePassFragment.class.getSimpleName();
 
     User user;
 
-    public ProfileFragment() {
+    public ChangePassFragment() {
     }
 
-    @BindView(R.id.nameText) TextView _nameText;
-    @BindView(R.id.emailText) TextView _emailText;
-    @BindView(R.id.saveProfileButton) Button _saveButton;
-    @BindView(R.id.changePassButton) Button _changePassButton;
-    @BindView(R.id.deleteAccountButton) Button _deleteAccountButton;
+    @BindView(R.id.input_password) EditText _passwordText;
+    @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
+    @BindView(R.id.btn_changepass) Button _changepassbutton;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_profile,container,false);
+        View view = inflater.inflate(R.layout.fragment_changepass,container,false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -59,29 +58,35 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getCurrentUser();
 
-        _saveButton.setOnClickListener(new View.OnClickListener() {
+        _changepassbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateUser();
-            }
-        });
-        _changePassButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("userid", getArguments().getString("userid"));
-                Fragment chpass = new ChangePassFragment();
-                chpass.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mainContent, chpass)
-                .commit();
+                if(validate()) {
+                    updateUser();
+                } else {
+                    Toast.makeText(getActivity(), "Passwords didn't match", Toast.LENGTH_LONG).show();
+                    _changepassbutton.setEnabled(true);
+                }
             }
         });
     }
 
+    private boolean validate() {
+        boolean valid = true;
+
+        String password = _passwordText.getText().toString();
+        String reEnterPassword = _reEnterPasswordText.getText().toString();
+        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
+            _reEnterPasswordText.setError("Password Do not match");
+            valid = false;
+        } else {
+            _reEnterPasswordText.setError(null);
+        }
+        return valid;
+    }
+
     private void updateUser() {
-        user.name = _nameText.getText().toString();
-        user.email = _emailText.getText().toString();
+        user.setPassword(_passwordText.getText().toString());
         User.UserService userService = ServiceHelper.createService(User.UserService.class);
         Call<User> call = userService.updateUser(user.id, user);
         call.enqueue(new Callback<User>() {
@@ -101,7 +106,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-   public void getCurrentUser(){
+    public void getCurrentUser(){
         User.UserService userService = ServiceHelper.createService(User.UserService.class);
         Call<User> user = userService.get(this.getArguments().getString("userid"));
         user.enqueue(new Callback<User>() {
@@ -114,7 +119,6 @@ public class ProfileFragment extends Fragment {
                 User user = response.body();
                 user.printUser();
                 setUser(user);
-                setTexts();
             }
 
             @Override
@@ -123,12 +127,8 @@ public class ProfileFragment extends Fragment {
                 // TODO: handle error
             }
         });
-   }
-
-    private void setTexts() {
-        _nameText.setText(user.name);
-        _emailText.setText(user.email);
     }
+
     public void setUser(User user) {
         this.user = user;
     }

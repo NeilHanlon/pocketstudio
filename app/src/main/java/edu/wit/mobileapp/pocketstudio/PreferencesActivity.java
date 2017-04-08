@@ -98,4 +98,8 @@ public class PreferencesActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public SharedPreferences getSettings() {
+        return settings;
+    }
 }
