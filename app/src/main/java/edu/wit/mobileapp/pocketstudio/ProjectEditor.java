@@ -34,31 +34,12 @@ import java.io.InputStream;
 
 
 public class ProjectEditor extends AppCompatActivity {
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static final String TAG_PERMISSION = "Permissions";
     private static final String TAG_TRANSPORT = "Transport";
     private static final String TAG_RECORD = "Record Audio Test";
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                Log.d(TAG_PERMISSION, "Recording permission granted");
-                break;
-        }
-        if (!permissionToRecordAccepted ){
-            Log.d(TAG_PERMISSION, "Recording permission denied, go fuck yourself y'filthy animal");
-            finish();
-        }
-
-    }
 
     static String recordFileName = null;
     boolean isRecording= false;
     boolean isplaying = false;
-
 
     //Track file storage
     File track1 = new File(Environment.getExternalStorageDirectory() + File.separator + "test1.wav"); //sorry
@@ -73,9 +54,6 @@ public class ProjectEditor extends AppCompatActivity {
     private ImageButton recordButton;
     WavRecordService recorder = new WavRecordService();
     private MediaPlayer player = null;
-
-    private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
 
     private void onRecord(boolean start) {
         if (start) {
@@ -155,19 +133,12 @@ public class ProjectEditor extends AppCompatActivity {
         //Create recorder
         final MediaRecorder mediaRecorder = new MediaRecorder();
         // Set audio format and encoder
+        //mediaRecorder.reset();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
         // Setup the output location
         mediaRecorder.setOutputFile(recordFileName);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            mediaRecorder.prepare();
-            Log.d(TAG_RECORD, "Recording prepared");
-        } catch (IOException e) {
-            Log.e(TAG_RECORD, "prepare() failed");
-        }
-
 
         final MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -180,7 +151,6 @@ public class ProjectEditor extends AppCompatActivity {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-
             }
         });
 
@@ -195,10 +165,8 @@ public class ProjectEditor extends AppCompatActivity {
                 } else {
                     playPauseButton.setBackground(pvPlayDrawable);
                 }
-
             }
         });
-
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +175,12 @@ public class ProjectEditor extends AppCompatActivity {
                 onRecord(isRecording);
                 if (hasMic) {
                     if (isRecording) {
+                        try {
+                            mediaRecorder.prepare();
+                            Log.d(TAG_RECORD, "Recording prepared");
+                        } catch (IOException e) {
+                            Log.e(TAG_RECORD, "prepare() failed");
+                        }
                         mediaRecorder.start();
                         recordButton.setBackground(pvStopDrawable);
                     } else {
@@ -226,6 +200,8 @@ public class ProjectEditor extends AppCompatActivity {
 
         //String filename = "android.resource://" + this.getPackageName() + "/raw/peppers1";
     }
+
+
 
     public void clickableTrack1(View view) {
         currentTrack = track1;
