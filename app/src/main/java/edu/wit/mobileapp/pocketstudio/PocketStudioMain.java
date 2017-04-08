@@ -89,7 +89,7 @@ public class PocketStudioMain extends AppCompatActivity {
         if(settings.getString("userid", null) == null) {
             Intent gimmegimmesomelovin = new Intent();
             gimmegimmesomelovin.setClass(this, LoginActivity.class);
-            startActivity(gimmegimmesomelovin);
+            startActivityForResult(gimmegimmesomelovin, 0);
         }
 
 
@@ -228,7 +228,7 @@ public class PocketStudioMain extends AppCompatActivity {
                 profile.addCategory(Intent.CATEGORY_LAUNCHER);
                 profile.putExtra("position", 3);
                 mDrawerLayout.closeDrawer(mDrawerPane);
-                startActivity(profile);
+                startActivityForResult(profile, 0);
             }
         });
 
@@ -300,7 +300,7 @@ public class PocketStudioMain extends AppCompatActivity {
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
         if (position != 0) {
-            startActivity(travel);
+            startActivityForResult(travel, 0);
         }
     }
 
@@ -451,6 +451,22 @@ public class PocketStudioMain extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "I doing things here. Code: " + resultCode);
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                getCurrentUser();
+                break;
+            case RESULT_CANCELED:
+                break;
+            default:
+                getCurrentUser();
+                break;
+        }
     }
 
     private void setTexts() {

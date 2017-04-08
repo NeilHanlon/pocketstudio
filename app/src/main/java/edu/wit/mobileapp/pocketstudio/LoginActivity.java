@@ -146,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         _loginButton.setEnabled(true);
+        setResult(RESULT_OK);
         finish();
     }
 

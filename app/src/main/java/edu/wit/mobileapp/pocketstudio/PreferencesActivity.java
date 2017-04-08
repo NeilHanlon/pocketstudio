@@ -94,6 +94,7 @@ public class PreferencesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(RESULT_OK);
                 this.finish();
                 return true;
         }
@@ -111,6 +112,7 @@ public class PreferencesActivity extends AppCompatActivity {
                 getFragmentManager().popBackStack();
                 return;
             }
+            setResult(RESULT_OK);
             finish();
         } else {
             getFragmentManager().popBackStack();
