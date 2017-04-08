@@ -26,6 +26,10 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings,container,false);
         RelativeLayout notiRow = (RelativeLayout) view.findViewById(R.id.notificationLayoutBox);
 
+        /***
+         * @TODO Implement onclick for Fix Latency
+         * @TODO Make up storage usage and set textview using that value
+         */
         notiRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

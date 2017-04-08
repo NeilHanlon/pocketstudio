@@ -1,5 +1,8 @@
 package edu.wit.mobileapp.pocketstudio.models;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -16,7 +19,7 @@ public class ServiceHelper {
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
+                    .addConverterFactory(GsonConverterFactory.create(getGson()));
 
     private static Retrofit retrofit = builder.build();
 
@@ -26,6 +29,10 @@ public class ServiceHelper {
 
     private static OkHttpClient.Builder httpClient =
             new OkHttpClient.Builder();
+
+    private static Gson getGson() {
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    }
 
     public static <S> S createService(
             Class<S> serviceClass) {

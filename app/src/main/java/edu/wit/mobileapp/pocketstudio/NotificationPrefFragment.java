@@ -67,6 +67,8 @@ public class NotificationPrefFragment extends XpPreferenceFragment {
         listView.addItemDecoration(new PreferenceDividerDecoration(getContext()).drawBottom(true).drawBetweenCategories(false));
         setDivider(null);
 
+        getPreferenceScreen().setTitle(getActivity().getTitle());
+
         // We don't want this. The children are still focusable.
         listView.setFocusable(false);
     }
