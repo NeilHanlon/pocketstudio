@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/drawerLayout"
     tools:context="edu.wit.mobileapp.pocketstudio.PocketStudioMain">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/mainContent">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
@@ -35,6 +37,19 @@
 
     <include layout="@layout/content_pocket_studio_main" />
 
+    <FrameLayout
+        android:id="@+id/fab_rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_add"
+            app:elevation="1dp"/>
+    </FrameLayout>
 
     <!-- The navigation drawer -->
     <RelativeLayout
@@ -49,7 +64,7 @@
             android:id="@+id/profileBox"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@color/material_blue_grey_800"
+            android:background="@color/colorAccent"
             android:padding="8dp" >
 
             <ImageView
@@ -71,7 +86,7 @@
                     android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rishabh"
+                    android:text="Potato Potato"
                     android:textColor="#fff"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -98,18 +113,4 @@
             android:background="#ffffffff" />
 
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/fab_rootLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add"
-            app:elevation="1dp"/>
-    </FrameLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -92,7 +92,7 @@ public class ProjectEditor extends AppCompatActivity {
         setContentView(R.layout.activity_project_editor);
 
         customCheckPermissions();
-        File pocketStudioDirectory = getApplicationContext().getDir("pocketStudio", Context.MODE_PRIVATE)
+        File pocketStudioDirectory = getApplicationContext().getDir("pocketStudio", Context.MODE_PRIVATE);
         pocketStudioDirectory.mkdirs();
         Log.d(TAG_STORAGE, "directory checked and created");
 
