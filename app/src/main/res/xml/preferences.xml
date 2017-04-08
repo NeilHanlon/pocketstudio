@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notifications_new_message"
+        android:title="New Messages"/>
+    <RingtonePreference
+        android:defaultValue="content://settings/system/notification_sound"
+        android:dependency="notifications_new_message"
+        android:key="notifications_new_message_ringtone"
+        android:ringtoneType="notification"
+        android:showDefault="true"
+        android:showSilent="true"
+        android:title="Sound" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:dependency="notifications_new_message"
+        android:key="notifications_new_message_vibrate"
+        android:title="@string/pref_title_vibrate"/>
+    <SeekBarPreference
+        android:defaultValue="50"
+        android:dependency="notifications_new_message"
+        android:icon="@drawable/ic_volume_up_black_24dp"
+        android:key="notifications_new_message_volume2"
+        android:max="100"
+        android:summary="@string/pref_title_volume2"
+        app:asp_dialogTintEnabled="true"
+        app:asp_min="20"
+        app:asp_tintEnabled="true"/>
+</PreferenceScreen>
