@@ -32,4 +32,11 @@
     <string name="no_acct_create">No account yet? Create one</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="storage_title">Storage</string>
+    <string name="storage_body">GB of unlimited</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_body">Notification Settings</string>
+    <string name="latecny_title">Latency</string>
+    <string name="latency_body">Fix Latency</string>
+    <string name="version">Version 0.1.6.13.a</string>
 </resources>
