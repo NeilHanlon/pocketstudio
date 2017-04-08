@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
@@ -68,12 +69,12 @@ public class PreferencesActivity extends AppCompatActivity {
             case 1:
                 //Preferences
                 setTitle("Preferences");
-                ft.replace(R.id.mainContent, new SettingsFragment()).commit();
+                ft.replace(R.id.mainContent, new SettingsFragment(), "PREFERENCES").addToBackStack(null).commit();
                 break;
             case 2:
                 //About
                 setTitle("About");
-                ft.replace(R.id.mainContent, new AboutFragment()).commit();
+                ft.replace(R.id.mainContent, new AboutFragment(), "ABOUT").addToBackStack(null).commit();
                 break;
             case 3:
                 //Profile
@@ -82,7 +83,7 @@ public class PreferencesActivity extends AppCompatActivity {
                 bundle.putString("userid", this.userid);
                 Fragment profile = new ProfileFragment();
                 profile.setArguments(bundle);
-                ft.replace(R.id.mainContent, profile).commit();
+                ft.replace(R.id.mainContent, profile, "PROFILE").addToBackStack(null).commit();
                 break;
             default:
                 break;
@@ -97,6 +98,23 @@ public class PreferencesActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
+        Log.d(this.getClass().getSimpleName(), "count: " + count);
+        if (count == 0) {
+            super.onBackPressed();
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.mainContent);
+            if (f instanceof ProfileFragment) {
+                getFragmentManager().popBackStack();
+                return;
+            }
+            finish();
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
     public SharedPreferences getSettings() {

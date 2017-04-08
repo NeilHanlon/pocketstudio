@@ -35,6 +35,7 @@ public class ChangePassFragment extends Fragment {
     private static String TAG = ChangePassFragment.class.getSimpleName();
 
     User user;
+    ChangePassFragment us;
 
     public ChangePassFragment() {
     }
@@ -50,6 +51,7 @@ public class ChangePassFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_changepass,container,false);
         ButterKnife.bind(this, view);
+        this.us = this;
         return view;
     }
 
@@ -95,6 +97,14 @@ public class ChangePassFragment extends Fragment {
                 // The network call was a success and we got a response
                 Toast.makeText(getActivity(), "Profile Updated!",
                         Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", getArguments().getString("userid"));
+                Fragment profile = new ProfileFragment();
+                profile.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainContent, profile)
+                        .addToBackStack(null)
+                        .commit();
             }
 
             @Override
@@ -117,7 +127,7 @@ public class ChangePassFragment extends Fragment {
                 // The network call was a success and we got a response
                 Log.d(TAG, "In Onresponse");
                 User user = response.body();
-                user.printUser();
+                //user.printUser();
                 setUser(user);
             }
 

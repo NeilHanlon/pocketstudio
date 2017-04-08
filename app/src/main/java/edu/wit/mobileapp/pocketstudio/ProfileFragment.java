@@ -73,7 +73,8 @@ public class ProfileFragment extends Fragment {
                 Fragment chpass = new ChangePassFragment();
                 chpass.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mainContent, chpass)
+                .replace(R.id.mainContent, chpass, "CHANGEPASSWORD")
+                .addToBackStack(null)
                 .commit();
             }
         });
@@ -112,7 +113,7 @@ public class ProfileFragment extends Fragment {
                 // The network call was a success and we got a response
                 Log.d(TAG, "In Onresponse");
                 User user = response.body();
-                user.printUser();
+                //user.printUser();
                 setUser(user);
                 setTexts();
             }
