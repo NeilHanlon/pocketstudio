@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -71,6 +72,7 @@ public class PocketStudioMain extends AppCompatActivity {
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
     @BindView(R.id.userName) TextView _profileBoxUserName;
+    @BindView(R.id.logoutButton) RelativeLayout _logoutButton;
     private User user;
 
     @Override
@@ -227,6 +229,17 @@ public class PocketStudioMain extends AppCompatActivity {
                 profile.putExtra("position", 3);
                 mDrawerLayout.closeDrawer(mDrawerPane);
                 startActivity(profile);
+            }
+        });
+
+        _logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settings.edit().remove("userid").apply();
+                Intent i = getBaseContext().getPackageManager()
+                        .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
             }
         });
     }
