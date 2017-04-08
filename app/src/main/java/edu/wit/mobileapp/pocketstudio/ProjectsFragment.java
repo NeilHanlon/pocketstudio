@@ -89,8 +89,6 @@ public class ProjectsFragment extends Fragment {
                     sharedExpandCollapseImage.animate().rotation(0).start();
                     //sharedExpandCollapseImage.setRotation(0);
                     sharedProjectsContent.setVisibility(View.VISIBLE);
-
-
                 }
                 else {
                     sharedExpandCollapseImage.animate().rotation(180).start();

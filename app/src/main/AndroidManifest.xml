@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -32,7 +34,7 @@
             android:label="@string/title_activity_login"></activity>
         <activity
             android:name=".SignupActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="Sign Up"></activity>
     </application>
 
 </manifest>

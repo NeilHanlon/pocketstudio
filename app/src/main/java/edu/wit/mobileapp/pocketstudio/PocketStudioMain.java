@@ -1,16 +1,21 @@
 package edu.wit.mobileapp.pocketstudio;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +28,10 @@ import butterknife.BindView;
 
 
 public class PocketStudioMain extends AppCompatActivity {
+    private static final String TAG_PERMISSION = "Permissions";
+    private static final int RECORD_REQUEST_CODE = 101;
+    private static final int READ_REQUEST_CODE = 1;
+    private static final int WRITE_REQUEST_CODE = 2;
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -72,9 +81,30 @@ public class PocketStudioMain extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent newProject = new Intent();
-                newProject.setClass(PocketStudioMain.this, ProjectEditor.class);
-                startActivity(newProject);
+                int recordPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.RECORD_AUDIO);
+                int readPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+                int writePermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (recordPermission != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG_PERMISSION, "Record permissions denied");
+                    makeRecordRequest();
+                }
+                if (readPermission != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG_PERMISSION, "Read permissions denied");
+                    makeReadRequest();
+                }
+                if (writePermission != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG_PERMISSION, "Write permissions denied");
+                    makeWriteRequest();
+                }
+                else {
+                    Intent newProject = new Intent();
+                    newProject.setClass(PocketStudioMain.this, ProjectEditor.class);
+                    startActivity(newProject);
+                }
             }
         });
     }
@@ -103,6 +133,19 @@ public class PocketStudioMain extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragments[position];
         }
+    }
+
+    protected void makeRecordRequest() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.RECORD_AUDIO}, RECORD_REQUEST_CODE);
+    }
+    protected void makeReadRequest() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_REQUEST_CODE);
+    }
+    protected void makeWriteRequest() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_REQUEST_CODE);
     }
 
     public String getUserid() {

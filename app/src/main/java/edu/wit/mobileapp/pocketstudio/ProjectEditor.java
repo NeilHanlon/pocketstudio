@@ -29,6 +29,7 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -36,8 +37,12 @@ import java.io.InputStream;
 public class ProjectEditor extends AppCompatActivity {
     private static final String TAG_TRANSPORT = "Transport";
     private static final String TAG_RECORD = "Record Audio Test";
+    private static final String TAG_PERMISSIONS = "Permissions";
+    private static final String TAG_PLAYBACK = "Playback";
+    private static final String TAG_STORAGE = "Storage";
 
     static String recordFileName = null;
+
     boolean isRecording= false;
     boolean isplaying = false;
 
@@ -52,26 +57,7 @@ public class ProjectEditor extends AppCompatActivity {
     private ImageButton playPauseButton;
     private ImageButton backToZeroButton;
     private ImageButton recordButton;
-    WavRecordService recorder = new WavRecordService();
     private MediaPlayer player = null;
-
-    private void onRecord(boolean start) {
-        if (start) {
-            startRecording();
-        } else {
-            stopRecording();
-        }
-    }
-
-    private void startRecording() {
-        recorder.setContext(getApplicationContext()); // TODO: move this to track selection onclick
-        recorder.setFileToRecord(currentTrack);       // TODO: and this
-        recorder.recordAudio();
-    }
-
-    private void stopRecording() {
-        recorder.stopRecording(new Handler(), 0L);
-    }
 
     private void startPlaying() {
         player = new MediaPlayer();
@@ -80,7 +66,7 @@ public class ProjectEditor extends AppCompatActivity {
             player.prepare();
             player.start();
         } catch (IOException e) {
-            Log.e(TAG_RECORD, "prepare() failed");
+            Log.e(TAG_PLAYBACK, "prepare() failed");
         }
     }
 
@@ -105,6 +91,11 @@ public class ProjectEditor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_editor);
 
+        customCheckPermissions();
+        File pocketStudioDirectory = getApplicationContext().getDir("pocketStudio", Context.MODE_PRIVATE)
+        pocketStudioDirectory.mkdirs();
+        Log.d(TAG_STORAGE, "directory checked and created");
+
         //buttons
         playPauseButton = (ImageButton) findViewById(R.id.buttonPlayPause);
         backToZeroButton = (ImageButton) findViewById(R.id.buttonBackToZero);
@@ -127,18 +118,23 @@ public class ProjectEditor extends AppCompatActivity {
         final boolean hasMic = (pmanager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE));
 
         recordFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        recordFileName += "/audiorecordtest.3gp";
-
+        recordFileName += "/audiorecordtest.wav";
 
         //Create recorder
         final MediaRecorder mediaRecorder = new MediaRecorder();
-        // Set audio format and encoder
-        //mediaRecorder.reset();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        // Setup the output location
-        mediaRecorder.setOutputFile(recordFileName);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        //mediaRecorder.setAudioEncoder(MediaRecorder.getAudioSourceMax());
+        mediaRecorder.setAudioEncodingBitRate(32);
+        mediaRecorder.setAudioSamplingRate(44100);
+        mediaRecorder.setOutputFile(recordFileName);
+        try {
+            mediaRecorder.prepare();
+            Log.d(TAG_RECORD, "Recording prepared");
+        } catch (IOException e) {
+            Log.e(TAG_RECORD, "prepare() failed");
+        }
 
         final MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -146,11 +142,34 @@ public class ProjectEditor extends AppCompatActivity {
             mediaPlayer.setDataSource(recordFileName);
         }
         catch (IOException e) {
-            Log.e(TAG_RECORD, "Failed to set data source");
+            Log.e(TAG_PLAYBACK, "Failed to set data source");
         }
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+            }
+        });
+
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isRecording = !isRecording;
+                if (hasMic) {
+                    if (isRecording) {
+                        mediaRecorder.start();
+                        recordButton.setBackground(pvStopDrawable);
+                        Log.d(TAG_RECORD, "Recording started");
+                    } else {
+                        mediaRecorder.stop();
+                        mediaRecorder.reset();
+                        mediaRecorder.release();
+                        recordButton.setBackground(pvRecordDrawable);
+                        Log.d(TAG_RECORD, "Recording stopped");
+                    }
+                }
+                else {
+                    Toast.makeText(context, "This device doesn't have a mic!", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -167,41 +186,21 @@ public class ProjectEditor extends AppCompatActivity {
                 }
             }
         });
-        recordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRecording = !isRecording;
-                Log.d(TAG_RECORD, "Recording set to "+String.valueOf(isRecording));
-                onRecord(isRecording);
-                if (hasMic) {
-                    if (isRecording) {
-                        try {
-                            mediaRecorder.prepare();
-                            Log.d(TAG_RECORD, "Recording prepared");
-                        } catch (IOException e) {
-                            Log.e(TAG_RECORD, "prepare() failed");
-                        }
-                        mediaRecorder.start();
-                        recordButton.setBackground(pvStopDrawable);
-                    } else {
-                        mediaRecorder.stop();
-                        mediaRecorder.reset();
-                        mediaRecorder.release();
-                        recordButton.setBackground(pvRecordDrawable);
-                        Log.d(TAG_RECORD, "Recording started");
-
-                    }
-                }
-                else {
-                    Toast.makeText(context, "This device doesn't have a mic!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
 
         //String filename = "android.resource://" + this.getPackageName() + "/raw/peppers1";
     }
 
-
+    private void customCheckPermissions(){
+        int recordPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.RECORD_AUDIO);
+        int readPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+        int writePermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        Log.d(TAG_PERMISSIONS, "Record Permission: " + recordPermission);
+        Log.d(TAG_PERMISSIONS, "Read Permission: " + readPermission);
+        Log.d(TAG_PERMISSIONS, "Write Permission: " + writePermission);
+    }
 
     public void clickableTrack1(View view) {
         currentTrack = track1;

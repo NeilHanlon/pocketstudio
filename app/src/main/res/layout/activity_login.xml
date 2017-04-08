@@ -110,7 +110,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@android:color/transparent"
                 android:text="@string/no_acct_create"
-                android:textAppearance="@style/BB_BottomBarBadge_Text" />
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/backToProjects"
