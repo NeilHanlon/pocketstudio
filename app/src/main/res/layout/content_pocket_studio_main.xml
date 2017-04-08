@@ -13,5 +13,4 @@
     tools:context="edu.wit.mobileapp.pocketstudio.PocketStudioMain"
     tools:showIn="@layout/activity_pocket_studio_main">
 
-
 </RelativeLayout>
