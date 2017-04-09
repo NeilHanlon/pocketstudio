@@ -1,5 +1,7 @@
 package edu.wit.mobileapp.pocketstudio.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.FileInputStream;
 
 import retrofit2.Call;
@@ -14,10 +16,10 @@ import retrofit2.http.Path;
  * Created by Neil on 3/25/2017.
  */
 public class Region {
-    public String id;
-    public Region region;
-    public float Start;
-    public FileInputStream data;
+    @Expose(deserialize = true, serialize = false) public String id;
+    @Expose() public Region region;
+    @Expose() public float Start;
+    @Expose() public FileInputStream data;
 
     public Region(Region region, float start, FileInputStream data) {
         this.region = region;

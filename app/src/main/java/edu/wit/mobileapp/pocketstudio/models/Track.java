@@ -1,5 +1,7 @@
 package edu.wit.mobileapp.pocketstudio.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,12 +16,12 @@ import retrofit2.http.Path;
  * Created by Neil on 3/25/2017.
  */
 public class Track {
-    public String id;
-    public float volume;
-    public float pan;
-    public int order;
-    public String name;
-    public List<Region> regions;
+    @Expose(deserialize = true, serialize = false)public String id;
+    @Expose() public float volume;
+    @Expose() public float pan;
+    @Expose() public int order;
+    @Expose() public String name;
+    @Expose() public List<Region> regions;
 
     public Track(float volume, float pan, int order, String name, List<Region> regions) {
         this.volume = volume;

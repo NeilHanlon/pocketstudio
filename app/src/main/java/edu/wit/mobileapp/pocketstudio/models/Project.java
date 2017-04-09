@@ -1,5 +1,7 @@
 package edu.wit.mobileapp.pocketstudio.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,12 +16,12 @@ import retrofit2.http.Path;
  * Created by Neil on 3/25/2017.
  */
 public class Project {
-    public String id;
-    public String name;
-    public int measures;
-    public int bpm;
-    public User owner;
-    public List<Track> tracks;
+    @Expose(deserialize = true, serialize = false) public String id;
+    @Expose() public String name;
+    @Expose() public int measures;
+    @Expose() public int bpm;
+    @Expose() public User owner;
+    @Expose() public List<Track> tracks;
 
     public Project(String name, User owner, List<Track> tracks) {
         this.name = name;
