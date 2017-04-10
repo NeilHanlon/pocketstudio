@@ -19,10 +19,10 @@ import retrofit2.http.Path;
 public class Group {
     @Expose(deserialize = true, serialize = false) public String id;
     @Expose() public String name;
-    @Expose() public List<User> users;
-    @Expose() public List<Project> projects;
+    @Expose() public List<String> users;
+    @Expose() public List<String> projects;
 
-    public Group(String name, List<User> users, List<Project> projects) {
+    public Group(String name, List<String> users, List<String> projects) {
         this.name = name;
         this.users = users;
         this.projects = projects;
@@ -39,13 +39,13 @@ public class Group {
                 @Body Group group
         );
 
-        @PUT("/v1/group/{id}")
+        @PUT("/v1/group/{id}/")
         Call<Group> updateGroup(
                 @Path("id") String id,
                 @Body Group group
         );
 
-        @DELETE("/v1/group/{id}")
+        @DELETE("/v1/group/{id}/")
         Call<Void> deleteGroup(
                 @Path("id") String id
         );

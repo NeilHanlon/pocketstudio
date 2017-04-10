@@ -17,9 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import butterknife.BindView;
+import edu.wit.mobileapp.pocketstudio.models.Project;
 
 /**
  * Created by Matt on 2/23/17.
@@ -32,6 +34,8 @@ public class ProjectsFragment extends Fragment {
     public static boolean isSharedProjectsHidden = false;
     private static final String TAG = ProjectsFragment.class.getName();
     Properties prop = new Properties();
+    List<Project> projects;
+    List<Project> groupProjects;
 
 
     @Nullable

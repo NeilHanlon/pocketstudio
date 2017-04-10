@@ -1,10 +1,13 @@
 package edu.wit.mobileapp.pocketstudio;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,10 +41,12 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
+import edu.wit.mobileapp.pocketstudio.models.Group;
 import edu.wit.mobileapp.pocketstudio.models.ServiceHelper;
 import edu.wit.mobileapp.pocketstudio.models.User;
 import retrofit2.Call;
@@ -55,6 +61,10 @@ public class PocketStudioMain extends AppCompatActivity {
     private static final int RECORD_REQUEST_CODE = 101;
     private static final int READ_REQUEST_CODE = 1;
     private static final int WRITE_REQUEST_CODE = 2;
+
+    private static boolean fabVisible;
+
+    public View lastContextMenuButton;
 
     private static String TAG = PocketStudioMain.class.getSimpleName();
 
@@ -73,7 +83,9 @@ public class PocketStudioMain extends AppCompatActivity {
 
     @BindView(R.id.userName) TextView _profileBoxUserName;
     @BindView(R.id.logoutButton) RelativeLayout _logoutButton;
+    @BindView(R.id.fab) FloatingActionButton fab;
     private User user;
+    public List<Group> groups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +141,39 @@ public class PocketStudioMain extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.pagerMain);
         viewPager.setAdapter(new CustomAdapter(getSupportFragmentManager(), getApplicationContext()));
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0)
+                {
+                    fab.setVisibility(View.VISIBLE);
+
+                }
+                else
+                {
+                    fab.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // noop
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position == 0)
+                {
+                    fab.setVisibility(View.VISIBLE);
+
+                }
+                else
+                {
+                    fab.setVisibility(View.GONE);
+                }
+            }
+        });
+
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -147,7 +192,6 @@ public class PocketStudioMain extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -266,7 +310,7 @@ public class PocketStudioMain extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pagerMain + ":"+viewPager.getCurrentItem());
+        /*Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pagerMain + ":"+viewPager.getCurrentItem());
         if (fragment != null) // could be null if not instantiated yet
         {
             if (fragment.getView() != null) {
@@ -275,6 +319,19 @@ public class PocketStudioMain extends AppCompatActivity {
                     finish();
                 }
             }
+        }*/
+        int count = getFragmentManager().getBackStackEntryCount();
+        Log.d(this.getClass().getSimpleName(), "count: " + count);
+        if (count == 0) {
+            super.onBackPressed();
+            /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.mainContent);
+            if (f instanceof ProfileFragment) {
+                getFragmentManager().popBackStack();
+                return;
+            }*/
+            setResult(RESULT_OK);
+        } else {
+            getFragmentManager().popBackStack();
         }
     }
     /*
@@ -475,5 +532,90 @@ public class PocketStudioMain extends AppCompatActivity {
     }
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Log.d(TAG, "####asdfasdf " + lastContextMenuButton.toString());
+        if(item.getGroupId() == R.id.groupListItemContextMenu) {
+            final int position = info.position;
+            switch (item.getItemId()) {
+                case R.id.edit:
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userid", settings.getString("userid", null));
+                    Fragment frag = new AboutFragment();
+                    frag.setArguments(bundle);
+                    //_groupFragmentContainer.removeAllViews();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.groupFragmentContainer, frag)
+                            .addToBackStack(null)
+                            .commit();
+                    return true;
+                case R.id.delete:
+                    // remove stuff here
+                    final String deleteid = groups.get(position).id;
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    deleteGroup(deleteid, position);
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                    return true;
+                default:
+                    return super.onContextItemSelected(item);
+            }
+        }
+        return false;
+    }
+
+    public void deleteGroup(String id, final int position) {
+        Group.GroupService groupService = ServiceHelper.createService(Group.GroupService.class);
+        Call<Void> call = groupService.deleteGroup(id);
+        call.enqueue(new Callback<Void>() {
+            private User user;
+
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                // The network call was a success and we got a response
+                Toast.makeText(PocketStudioMain.this, "Deleted Group", Toast.LENGTH_SHORT).show();
+                removeFromGroups(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", settings.getString("userid", null));
+                Fragment frag = new GroupsFragment();
+                frag.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.groupFragmentContainer, frag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // the network call was a failure
+                Toast.makeText(PocketStudioMain.this, "Failed to delete group", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void onContextMenuClosed(Menu menu) {
+        if (menu.getItem(0).getGroupId() == R.id.groupListItemContextMenu) {
+
+        }
+    }
+
+    public void removeFromGroups(int position) {
+        groups.remove(position);
     }
 }

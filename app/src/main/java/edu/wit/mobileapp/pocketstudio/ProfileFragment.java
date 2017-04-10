@@ -78,6 +78,7 @@ public class ProfileFragment extends Fragment {
                 .commit();
             }
         });
+        //TODO: Implement delete account
     }
 
     private void updateUser() {

@@ -1,40 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/content_white">
+    android:background="@color/content_white"
+    android:id="@+id/groupFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="5dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_group"
-            android:scaleX="4"
-            android:scaleY="4"
-            android:layout_centerInParent="true"/>
-
-        <TextView
-            android:id="@+id/add_friends"
-            android:lines="4"
-            android:text="Add friends to edit and share\nprojects with others!\n\nYour groups and messages will appear here."
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:paddingTop="40dp"
-            android:paddingBottom="60dp"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+        android:elevation="5dp"
+        android:id="@+id/groupFragmentContainer">
 
     </RelativeLayout>
 
-        <ListView
-            android:id="@+id/myProjectsListview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
+    <ListView
+        android:id="@+id/groupListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+    <FrameLayout
+        android:id="@+id/fab_rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAddGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_add"
+            app:elevation="1dp"/>
+    </FrameLayout>
 </LinearLayout>
