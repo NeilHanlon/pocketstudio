@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -29,6 +31,8 @@ import butterknife.BindView;
 
 public class PocketStudioMain extends AppCompatActivity {
     private static final String TAG_PERMISSION = "Permissions";
+    private static final String TAG_FILEIO = "FileIO";
+
     private static final int RECORD_REQUEST_CODE = 101;
     private static final int READ_REQUEST_CODE = 1;
     private static final int WRITE_REQUEST_CODE = 2;
@@ -53,6 +57,28 @@ public class PocketStudioMain extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pocket_studio_main);
+
+        String pocketStudioDirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pocketStudio/";
+        File pocketStudioDirectory = new File(pocketStudioDirName);
+        Log.d(TAG_FILEIO, pocketStudioDirectory.toString());
+        if (!pocketStudioDirectory.exists()) {
+            pocketStudioDirectory.mkdirs();
+            Log.d(TAG_FILEIO, "PocketstudioDir created");
+        }
+
+        /*
+        File f = new File(pocketStudioDir);
+        File contents[] = f.listFiles();
+        int minExistingProject = 1;
+        int maxExistingProject = 1;
+        for (int i=0; i < contents.length; i++) {
+            Log.d(TAG_FILEIO, "File found: " + contents[i].getName());
+            if (contents[i].toString() == "Project " + (i+1)){
+                Log.d(TAG_FILEIO, "Project Standard found: " + contents[i]);
+            }
+
+        }*/
+
 
         getSupportActionBar().setElevation(0);
 
