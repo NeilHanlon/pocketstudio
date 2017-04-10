@@ -41,11 +41,13 @@ public class AddGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_addgroup,container,false);
         ButterKnife.bind(this, view);
+        _btn_createGroup.setEnabled(true);
         return view;
     }
 
     @OnClick(R.id.btn_creategroup)
     public void createGroup(){
+        _btn_createGroup.setEnabled(false);
         String userid = getArguments().getString("userid");
         String groupname = _group_name.getText().toString();
         Group.GroupService groupService = ServiceHelper.createService(Group.GroupService.class);
@@ -71,7 +73,9 @@ public class AddGroupFragment extends Fragment {
             @Override
             public void onFailure(Call<Group> call, Throwable t) {
                 // the network call was a failure
-                // TODO: handle error
+                Toast.makeText(getActivity(), "Something went wrong",
+                        Toast.LENGTH_SHORT).show();
+                _btn_createGroup.setEnabled(true);
             }
         });
     }
