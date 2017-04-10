@@ -30,4 +30,51 @@
     <string name="track_3">Track 3</string>
     <string name="track_4">Track 4</string>
     <string name="no_acct_create">No account yet? Create one</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="storage_title">Storage</string>
+    <string name="storage_body">GB of unlimited</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_body">Notification Settings</string>
+    <string name="latecny_title">Latency</string>
+    <string name="latency_body">Fix Latency</string>
+    <string name="version">Version 0.1.6.13.a</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_notif_color">Notification color</string>
+
+    <string name="pref_notif_content">When device is locked</string>
+    <string-array name="pref_notif_content_titles">
+        <item>Show all notification content</item>
+        <item>Hide sensitive notification content</item>
+        <item>Hide all notification content</item>
+    </string-array>
+    <string-array name="pref_notif_content_titles_long">
+        <!--<item>Show all notification content including sensitive notification content</item>-->
+        <item>Show all notification content including sensitive content</item>
+        <!--<item>Show all notification content including content</item>-->
+        <item>Hide sensitive notification content</item>
+        <item>Hide all notification content</item>
+    </string-array>
+    <string-array name="pref_notif_content_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="pref_title_volume2">Notification volume</string>
+    <string name="lipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus tincidunt nisi nec finibus.</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="delete_account">Delete Account</string>
 </resources>

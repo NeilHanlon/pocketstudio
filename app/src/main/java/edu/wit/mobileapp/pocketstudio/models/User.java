@@ -1,5 +1,12 @@
 package edu.wit.mobileapp.pocketstudio.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.Expose;
+
+import org.parceler.Transient;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -15,13 +22,14 @@ import retrofit2.http.Path;
  * Created by Neil on 3/25/2017.
  */
 
+@org.parceler.Parcel
 public class User{
-    public String id;
-    public String name;
-    private String password;
-    public String email;
-    public List<String> groups;
-    public List<String> projects;
+    @Expose(deserialize = true, serialize = false) public String id;
+    @Expose() public String name;
+    @Expose() private String password;
+    @Expose() public String email;
+    @Expose() public List<String> groups;
+    @Expose() public List<String> projects;
 
     public User(String name, String email, String password) {
         this.name = name;
@@ -29,6 +37,8 @@ public class User{
         this.email = email;
     }
 
+    public User() {
+    }
 
     public void printUser()
     {
@@ -39,7 +49,25 @@ public class User{
         return this.password.equals(mPassword);
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public interface UserService {
+
+        @GET("/v1/user/{id}")
+        Call<User> get(
+                @Path("id") String id
+        );
+
         @GET("/v1/user/{email}")
         Call<User> getUserByEmail(
                 @Path("email") String email
@@ -50,13 +78,13 @@ public class User{
                 @Body User user
         );
 
-        @PUT("/v1/user/{id}")
+        @PUT("/v1/user/{id}/")
         Call<User> updateUser(
                 @Path("id") String id,
                 @Body User user
         );
 
-        @DELETE("/v1/user/{id}")
+        @DELETE("/v1/user/{id}/")
         Call<Void> deleteUser(
                 @Path("id") String id
         );

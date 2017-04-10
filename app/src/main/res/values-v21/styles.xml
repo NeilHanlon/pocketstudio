@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="ThemeOverlay.AppCompat.Dark.ActionBar.InverseControls">
+        <item name="colorControlNormal">?android:attr/textColorSecondaryInverse</item>
+        <item name="colorControlHighlight">@color/ripple_material_light</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -8,6 +13,22 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorForeground">@color/foreground_material_light</item>
         <item name="android:statusBarColor">?android:attr/colorPrimary</item>
+
+
+
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Material</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearanceMediumInverse">
+            @style/TextAppearance.AppCompat.Subhead.Inverse
+        </item>
+
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="alertDialogTheme">@style/AppTheme.Dialog.Alert</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog</item>
+
+        <item name="asp_preferenceIconTint">?colorAccent</item>
+        <item name="asp_preferenceDialogIconTint">?asp_preferenceIconTint</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -15,6 +36,44 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:textColorHighlight">@color/colorPrimaryDark</item>
+
+        <!--<item name="android:textAppearanceMedium">?textAppearanceListItem</item>-->
+        <item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearanceMediumInverse">
+            @style/TextAppearance.AppCompat.Subhead.Inverse
+        </item>
+    </style>
+
+    <style name="AppTheme.Dialog.Alert" parent="Theme.AppCompat.Dialog.Alert">
+        <!--<item name="colorPrimary">@color/primary</item>-->
+        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:textColorHighlight">@color/colorPrimaryDark</item>
+
+        <!--<item name="android:textAppearanceMedium">?textAppearanceListItem</item>-->
+        <item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearanceMediumInverse">
+            @style/TextAppearance.AppCompat.Subhead.Inverse
+        </item>
+    </style>
+
+    <style name="Widget.AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleMarginStart">16dp</item>
+        <item name="titleMarginEnd">16dp</item>
+    </style>
+
+    <style name="Popup" parent="Widget.AppCompat.ListPopupWindow">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:popupBackground">@drawable/popup</item>
     </style>
 
 </resources>

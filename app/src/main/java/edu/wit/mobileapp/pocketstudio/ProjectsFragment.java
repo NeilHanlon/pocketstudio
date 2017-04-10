@@ -40,17 +40,6 @@ public class ProjectsFragment extends Fragment {
 
         View myInflatedView = inflater.inflate(R.layout.projects_fragment,container,false);
 
-        //    START MAKING PAGE BUTTON
-        final Button loginPageButton = (Button)myInflatedView.findViewById(R.id.loginTestPageButton);
-        loginPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent loginPage = new Intent(getActivity(), LoginActivity.class);
-                startActivity(loginPage);
-                Log.d(TAG, "Definitely pressed that button");
-            }
-        });
-
         //MY PROJECTS SECTION
         ListView projectsListView = (ListView) myInflatedView.findViewById(R.id.myProjectsListview);
         TextView myProjEmptyText = (TextView) myInflatedView.findViewById(R.id.myProjEmptyText);
