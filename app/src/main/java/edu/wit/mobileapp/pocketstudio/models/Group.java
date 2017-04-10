@@ -2,6 +2,8 @@ package edu.wit.mobileapp.pocketstudio.models;
 
 import com.google.gson.annotations.Expose;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -16,6 +18,7 @@ import retrofit2.http.Path;
 /**
  * Created by Neil on 3/25/2017.
  */
+@Parcel
 public class Group {
     @Expose(deserialize = true, serialize = false) public String id;
     @Expose() public String name;
@@ -26,6 +29,10 @@ public class Group {
         this.name = name;
         this.users = users;
         this.projects = projects;
+    }
+
+    public Group() {
+
     }
 
     public interface GroupService {
@@ -62,15 +69,32 @@ public class Group {
         );
 
         @PUT("/v1/group/{id}/users/{user_id}")
-        Call<List<User>> addUserToGroup(
+        Call<Group> addUserToGroup(
                 @Path("id") String id,
                 @Path("user_id") String user_id
         );
 
         @DELETE("/v1/group/{id}/users/{user_id}")
-        Call<List<User>> removeUserFromGroup(
+        Call<Group> removeUserFromGroup(
                 @Path("id") String id,
                 @Path("user_id") String user_id
+        );
+
+        @GET("/v1/group/{id}/projects")
+        Call<List<Project>> getGroupProjects(
+                @Path("id") String id
+        );
+
+        @PUT("/v1/group/{id}/projects/{project_id}")
+        Call<Group> addProjectToGroup(
+                @Path("id") String id,
+                @Path("project_id") String project_id
+        );
+
+        @DELETE("/v1/group/{id}/projects/{project_id}")
+        Call<Group> removeProjectFromGroup(
+                @Path("id") String id,
+                @Path("project_id") String project_id
         );
     }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stubContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:animateLayoutChanges="true">
+    <TextView
+        android:id="@+id/stubContentEmptyText"
+        android:lines="2"
+        android:text="@string/no_shared_projects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:paddingTop="40dp"
+        android:paddingBottom="60dp"
+        android:textSize="15sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

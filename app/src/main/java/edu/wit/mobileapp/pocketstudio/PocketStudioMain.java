@@ -38,6 +38,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.parceler.Parcels;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ import java.util.Properties;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import edu.wit.mobileapp.pocketstudio.models.Group;
+import edu.wit.mobileapp.pocketstudio.models.Project;
 import edu.wit.mobileapp.pocketstudio.models.ServiceHelper;
 import edu.wit.mobileapp.pocketstudio.models.User;
 import retrofit2.Call;
@@ -86,6 +89,10 @@ public class PocketStudioMain extends AppCompatActivity {
     @BindView(R.id.fab) FloatingActionButton fab;
     private User user;
     public List<Group> groups;
+    public String groupid;
+    public List<User> users;
+    public Group currentGroup;
+    public List<Project> projects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -577,7 +584,127 @@ public class PocketStudioMain extends AppCompatActivity {
                     return super.onContextItemSelected(item);
             }
         }
+        if(item.getGroupId() == R.id.groupUserListItemContextMenu) {
+            final int position = info.position;
+            switch (item.getItemId()) {
+                case R.id.remove:
+                    // remove stuff here
+                    final String deleteid = users.get(position).id;
+                    final String groupid = currentGroup.id;
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    deleteUserFromGroup(groupid, deleteid, position);
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                    return true;
+                default:
+                    return super.onContextItemSelected(item);
+            }
+        }
+        if(item.getGroupId() == R.id.groupProjectListItemContextMenu) {
+            final int position = info.position;
+            switch (item.getItemId()) {
+                case R.id.remove:
+                    // remove stuff here
+                    final String deleteid = projects.get(position).id;
+                    final String groupid = currentGroup.id;
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    deleteProjectFromGroup(groupid, deleteid, position);
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                    return true;
+                default:
+                    return super.onContextItemSelected(item);
+            }
+        }
         return false;
+    }
+
+    private void deleteUserFromGroup(String groupid, String deleteid, final int position) {
+        Group.GroupService groupService = ServiceHelper.createService(Group.GroupService.class);
+        Call<Group> call = groupService.removeUserFromGroup(groupid, deleteid);
+        call.enqueue(new Callback<Group>() {
+            private User user;
+
+            @Override
+            public void onResponse(Call<Group> call, Response<Group> response) {
+                // The network call was a success and we got a response
+                Toast.makeText(PocketStudioMain.this, "Removed member from group", Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", settings.getString("userid", null));
+                bundle.putParcelable("group", Parcels.wrap(currentGroup));
+                Fragment frag = new DisplayGroupFragment();
+                frag.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.groupFragmentContainer, frag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            @Override
+            public void onFailure(Call<Group> call, Throwable t) {
+                // the network call was a failure
+                Log.d(TAG, "#####", t);
+                Toast.makeText(PocketStudioMain.this, "Failed to remove member from group", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteProjectFromGroup(String groupid, String deleteid, final int position) {
+        Group.GroupService groupService = ServiceHelper.createService(Group.GroupService.class);
+        Call<Group> call = groupService.removeProjectFromGroup(groupid, deleteid);
+        call.enqueue(new Callback<Group>() {
+            private User user;
+
+            @Override
+            public void onResponse(Call<Group> call, Response<Group> response) {
+                // The network call was a success and we got a response
+                Toast.makeText(PocketStudioMain.this, "Removed project from group", Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", settings.getString("userid", null));
+                bundle.putParcelable("group", Parcels.wrap(currentGroup));
+                Fragment frag = new DisplayGroupFragment();
+                frag.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.groupFragmentContainer, frag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            @Override
+            public void onFailure(Call<Group> call, Throwable t) {
+                // the network call was a failure
+                Log.d(TAG, "#####", t);
+                Toast.makeText(PocketStudioMain.this, "Failed to remove project from group", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void deleteGroup(String id, final int position) {

@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.parceler.Parcels;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -110,8 +112,17 @@ public class GroupsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (view != null) {
-                    view.setBackgroundColor(Color.parseColor("#d6d7d7"));
-                    Log.d(TAG, "######## " + groups.get(position).id);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userid", settings.getString("userid", null));
+                    bundle.putParcelable("group", Parcels.wrap(groups.get(position)));
+                    Fragment frag = new DisplayGroupFragment();
+                    frag.setArguments(bundle);
+                    frag.setTargetFragment(GroupsFragment.this, 0);
+                    _groupFragmentContainer.removeAllViews();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.groupFragmentContainer, frag)
+                            .addToBackStack(null)
+                            .commit();
                 }
             }
         });

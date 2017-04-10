@@ -87,4 +87,7 @@
     <string name="group_name">Group Name</string>
     <string name="create_group">Create Group</string>
     <string name="edit">Edit</string>
+    <string name="shared_projects">Shared Projects</string>
+    <string name="group_members">Group Members</string>
+    <string name="remove">Remove</string>
 </resources>
