@@ -46,6 +46,8 @@
             android:label="Preferences">
 
         </activity>
+        <service android:name=".WavRecordService" android:enabled="true"></service>
+        <service android:name=".WavPlayerService" android:enabled="true"></service>
     </application>
 
 </manifest>

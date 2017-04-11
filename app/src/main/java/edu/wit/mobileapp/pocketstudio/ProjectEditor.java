@@ -2,8 +2,13 @@ package edu.wit.mobileapp.pocketstudio;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioAttributes;
@@ -14,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +33,7 @@ import android.widget.ImageButton;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,19 +58,13 @@ public class ProjectEditor extends AppCompatActivity {
     static String recordFileName = null;
     static String projectName = null;
 
+    WavRecordService mWavRecordService;
+    boolean mBound = false;
+
     boolean isRecording = false;
     boolean isplaying = false;
 
-    //Track file storage
-
-    File track1 = new File(Environment.getExternalStorageDirectory() + File.separator + "test1.wav"); //sorry
-    File track2 = new File(Environment.getExternalStorageDirectory() + File.separator + "test2.wav");
-    File track3 = new File(Environment.getExternalStorageDirectory() + File.separator + "test3.wav");
-    File track4 = new File(Environment.getExternalStorageDirectory() + File.separator + "test4.wav");
-
-    SoundPool trackPool;
     int currentTrack = 1; // selector for currently active track
-
 
     //Button references
     private ImageButton playPauseButton;
@@ -71,32 +72,13 @@ public class ProjectEditor extends AppCompatActivity {
     private ImageButton recordButton;
     private MediaPlayer player = null;
 
-    private void startPlaying() {
-        player = new MediaPlayer();
-        try {
-            player.setDataSource(recordFileName);
-            player.prepare();
-            player.start();
-        } catch (IOException e) {
-            Log.e(TAG_PLAYBACK, "prepare() failed");
-        }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(getApplicationContext(), WavRecordService.class);
+        Log.d(TAG_PLAYBACK, "#### WE HERE");
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
-
-    private void stopPlaying() {
-        player.release();
-        player = null;
-    }
-
-    private Drawable makeDrawable(String resourceURI) {
-        int resourceName = getResources().getIdentifier(resourceURI, null, getPackageName());
-        return getResources().getDrawable(resourceName);
-    }
-
-    private boolean checkPermission(String permission) {
-        int checkPermission = ContextCompat.checkSelfPermission(this, permission);
-        return (checkPermission == PackageManager.PERMISSION_GRANTED);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +104,7 @@ public class ProjectEditor extends AppCompatActivity {
         final Drawable pvStopDrawable = makeDrawable("@drawable/pvstoprecording");
         final Drawable pvRecordDrawable = makeDrawable("@drawable/pvrecordbutton");
 
+
         // Record to this file:
         final int trackNumber = 0;
 
@@ -145,13 +128,6 @@ public class ProjectEditor extends AppCompatActivity {
 
         Log.d(TAG_STORAGE, recordFileName);
 
-        File projectDirectory = new File(pocketStudioDir);
-        if (!projectDirectory.exists()) {
-            projectDirectory.mkdirs();
-        }
-
-        Log.d(TAG_STORAGE, projectDirectory.toString());
-
         //Create recorder
         final MediaRecorder mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -159,23 +135,6 @@ public class ProjectEditor extends AppCompatActivity {
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mediaRecorder.setAudioEncodingBitRate(16);
         mediaRecorder.setAudioSamplingRate(44100);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build();
-
-            trackPool = new SoundPool.Builder()
-                    .setMaxStreams(4)
-                    .setAudioAttributes(audioAttributes)
-                    .build();
-        }
-        else {
-            trackPool = new SoundPool(4, AudioManager.STREAM_MUSIC,1);
-        }
 
 
         recordButton.setOnClickListener(new View.OnClickListener() {
@@ -187,18 +146,22 @@ public class ProjectEditor extends AppCompatActivity {
                     if (isRecording) {
                         File file = new File(createTrackFileName());
                         file.delete();
-                        mediaRecorder.setOutputFile(createTrackFileName());
+                        mWavRecordService.setFileToRecord(file);
+                        mWavRecordService.recordAudio();
+                        /*mediaRecorder.setOutputFile(createTrackFileName());
                         try {
                             mediaRecorder.prepare();
                             Log.d(TAG_RECORD, "Recording prepared");
                         } catch (IOException e) {
                             Log.e(TAG_RECORD, "prepare() failed");
                         }
-                        mediaRecorder.start();
+                        mediaRecorder.start();*/
                         recordButton.setBackground(pvStopDrawable);
                         Log.d(TAG_RECORD, "Recording started");
                     } else {
                         Log.d(TAG_TRANSPORT, "Stop Tapped");
+                        mWavRecordService.stopRecording(mWavRecordService.getRecServiceHandler(), 0);
+                        /*
                         mediaRecorder.stop();
                         mediaRecorder.reset();
                         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -208,12 +171,13 @@ public class ProjectEditor extends AppCompatActivity {
                         mediaRecorder.setAudioEncodingBitRate(16);
                         mediaRecorder.setAudioSamplingRate(44100);
                         recordButton.setBackground(pvRecordDrawable);
-                        Log.d(TAG_RECORD, "Recording stopped");
+                        Log.d(TAG_RECORD, "Recording stopped");*/
                     }
                 } else {
                     Toast.makeText(context, "This device doesn't have a mic!", Toast.LENGTH_LONG).show();
                 }
             }
+
         });
 
         playPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +193,24 @@ public class ProjectEditor extends AppCompatActivity {
             }
         });
 
+        backToZeroButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWavRecordService.stopRecording(mWavRecordService.getRecServiceHandler(), 0);
+            }
+        });
+
         //String filename = "android.resource://" + this.getPackageName() + "/raw/peppers1";
+    }
+
+    private Drawable makeDrawable(String resourceURI) {
+        int resourceName = getResources().getIdentifier(resourceURI, null, getPackageName());
+        return getResources().getDrawable(resourceName);
+    }
+
+    private boolean checkPermission(String permission) {
+        int checkPermission = ContextCompat.checkSelfPermission(this, permission);
+        return (checkPermission == PackageManager.PERMISSION_GRANTED);
     }
 
     private String createTrackFileName(){
@@ -255,6 +236,7 @@ public class ProjectEditor extends AppCompatActivity {
         view.setBackgroundResource(R.color.colorAccent);
         TextView textView = (TextView) findViewById(R.id.track1Text);
         textView.setTextColor(getResources().getColor(R.color.white));
+        ImageView trackSettings = (ImageView) findViewById(R.id.trackSettings1);
         Log.d(TAG_PLAYBACK, "Track set to 1");
     }
 
@@ -264,6 +246,7 @@ public class ProjectEditor extends AppCompatActivity {
         view.setBackgroundResource(R.color.colorAccent);
         TextView textView = (TextView) findViewById(R.id.track2Text);
         textView.setTextColor(getResources().getColor(R.color.white));
+        ImageView trackSettings = (ImageView) findViewById(R.id.trackSettings2);
         Log.d(TAG_PLAYBACK, "Track set to 2");
 
     }
@@ -274,6 +257,7 @@ public class ProjectEditor extends AppCompatActivity {
         view.setBackgroundResource(R.color.colorAccent);
         TextView textView = (TextView) findViewById(R.id.track3Text);
         textView.setTextColor(getResources().getColor(R.color.white));
+        ImageView trackSettings = (ImageView) findViewById(R.id.trackSettings3);
         Log.d(TAG_PLAYBACK, "Track set to 3");
 
     }
@@ -284,6 +268,7 @@ public class ProjectEditor extends AppCompatActivity {
         view.setBackgroundResource(R.color.colorAccent);
         TextView textView = (TextView) findViewById(R.id.track4Text);
         textView.setTextColor(getResources().getColor(R.color.white));
+        ImageView trackSettings = (ImageView) findViewById(R.id.trackSettings4);
         Log.d(TAG_PLAYBACK, "Track set to 4");
 
     }
@@ -306,4 +291,22 @@ public class ProjectEditor extends AppCompatActivity {
         tx4.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
     }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            WavRecordService.RecLocalBinder binder = (WavRecordService.RecLocalBinder) service;
+            mWavRecordService = binder.getService();
+            Log.d(TAG_PLAYBACK, "#### WE HERE2222");
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 }

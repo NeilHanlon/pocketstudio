@@ -118,8 +118,8 @@ public class PocketStudioMain extends AppCompatActivity {
             Log.d(TAG_FILEIO, "PocketstudioDir created");
         }
 
-        /*
-        File f = new File(pocketStudioDir);
+
+        /*File f = new File(pocketStudioDirName);
         File contents[] = f.listFiles();
         int minExistingProject = 1;
         int maxExistingProject = 1;

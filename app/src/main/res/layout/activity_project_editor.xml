@@ -45,6 +45,7 @@
                     android:paddingBottom="10dp"
                     android:textColor="@color/white"/>
                 <ImageView
+                    android:id="@+id/trackSettings1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_track_settings"
@@ -72,6 +73,7 @@
                     android:paddingBottom="10dp"
                     android:textColor="@color/colorPrimaryDark"/>
                 <ImageView
+                    android:id="@+id/trackSettings2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_track_settings"
@@ -99,6 +101,7 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/colorPrimaryDark"/>
             <ImageView
+                android:id="@+id/trackSettings3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_track_settings"
@@ -126,6 +129,7 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/colorPrimaryDark"/>
             <ImageView
+                android:id="@+id/trackSettings4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_track_settings"

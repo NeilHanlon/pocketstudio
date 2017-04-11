@@ -17,7 +17,6 @@
 package edu.wit.mobileapp.pocketstudio;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -41,13 +40,12 @@ import java.nio.ByteBuffer;
 
 public class WavRecordService extends Service implements Runnable{
 
-    private static final String TAG = "WavRecordService";
-
-    private static final String APP_NAME = "WavRecordService";
+	private static final String APP_NAME = "WavRecordService";
 	//private static final int TWOTRACKREC_ID = 1;
 	private static final int NUM_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
 	private static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;	
 	private static final int SAMPLERATE = 44100;
+	private static final String AUDIO_FOLDER = "pocketstudio";
 	private static final String TEMP_FILENAME = "record_temp.raw";
 	private static final int BPP = 16;
 	//private static final int TIMER_INTERVAL = 120;
@@ -55,9 +53,7 @@ public class WavRecordService extends Service implements Runnable{
 	private static final int COPY_CHUNKSIZE = 4096;
 	
 	private Handler recServiceHandler;
-
-    private Context context;
-
+	
 	private File filetorecord;
 	private int bufferSize = 0;
 	private AudioRecord recorder = null;
@@ -77,7 +73,7 @@ public class WavRecordService extends Service implements Runnable{
 	// Binder given to clients
 	private final IBinder mBinder = new RecLocalBinder();
 
-	/*
+	/**
 	 * Class used for the client Binder.  Because we know this service always
 	 * runs in the same process as its clients, we don't need to deal with IPC.
 	 */
@@ -104,7 +100,11 @@ public class WavRecordService extends Service implements Runnable{
 		recServiceHandler = h;   
 		
 	}
-	
+
+	public Handler getRecServiceHandler() {
+		return recServiceHandler;
+	}
+
 	private int initialize() {
 
         int sampleRate = SAMPLERATE;
@@ -136,12 +136,9 @@ public class WavRecordService extends Service implements Runnable{
 		//data = new byte[framePeriod*BPP/8];
 
 		String filename = getTempFilename();
-		Log.d(TAG, filename);
-        try {
-            File pizzaDicksFile = new File(filename);
-            pizzaDicksFile.createNewFile();
-			os = new FileOutputStream(pizzaDicksFile, false);
-		} catch (IOException e) {
+		try {
+			os = new FileOutputStream(filename);
+		} catch (FileNotFoundException e) {
 			
 			e.printStackTrace();
             return -1;
@@ -152,13 +149,9 @@ public class WavRecordService extends Service implements Runnable{
 		return 0;
 	}
 
-	public void setContext(Context context) {
-        this.context = context;
-    }
-
 	private String getTempFilename(){
-		String filepath = context.getFilesDir().getPath();
-		File file = new File(filepath);
+		String filepath = Environment.getExternalStorageDirectory().getPath();
+		File file = new File(filepath,AUDIO_FOLDER);
 
 		if(!file.exists()){
 			file.mkdirs();
@@ -166,10 +159,10 @@ public class WavRecordService extends Service implements Runnable{
 
 		File tempFile = new File(filepath,TEMP_FILENAME);
 
-/*		if(tempFile.exists())
-			tempFile.delete();*/
+		if(tempFile.exists())
+			tempFile.delete();
 
-		return (filepath + "/" + TEMP_FILENAME);
+		return (file.getAbsolutePath() + "/" + TEMP_FILENAME);
 	}
 
 
@@ -179,7 +172,11 @@ public class WavRecordService extends Service implements Runnable{
 		
 		int rec_result;
 		filetorecord = file;
+
 		rec_result = initialize();   // should return some sort of value - if an error occurs, then we can pass that back
+        if (filetorecord == null) {
+            rec_result = -1;
+        }
 		return rec_result;
 		
 	}
@@ -224,7 +221,7 @@ public class WavRecordService extends Service implements Runnable{
 				recorder.read(data, 0, data.length);
 
                 try {
-                    //Log.i(APP_NAME, "Writing...");
+                    Log.i(APP_NAME, "Writing...");
 
                     os.write(data);
                 } catch (IOException e) {
@@ -262,13 +259,13 @@ public class WavRecordService extends Service implements Runnable{
 			}
 			rms = Math.sqrt(rms/i);
 			// mRmsSmoothed = mRmsSmoothed * mAlpha + (1 - mAlpha) * rms;
-			Message msg = recServiceHandler.obtainMessage();
-			msg.what = 	5;
+			//Message msg = recServiceHandler.obtainMessage();
+			//msg.what = 	5;
 			//	msg.setData(rms);
 			//				msg.arg1 = rms;
-			bundle.putDouble("test", rms);
-			msg.setData(bundle);
-			recServiceHandler.sendMessage(msg);
+			//bundle.putDouble("test", rms);
+			//msg.setData(bundle);
+			//recServiceHandler.sendMessage(msg);
 		//}
 	}
 
@@ -338,6 +335,7 @@ public class WavRecordService extends Service implements Runnable{
 		File recordedFile = new File(recordedFileName);
 		if (recordedFile.exists()) {    // might be stopping after a bounce operation, so no 2.wav yet
 			try {
+
 				FileUtils.copyFile(recordedFile, bkpFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -359,13 +357,7 @@ public class WavRecordService extends Service implements Runnable{
 
 	public void recordAudio() {
 		//Log.i(APP_NAME, "Recording now...");
-		if (recordingThread == null){
-            Log.d(TAG, "Recording tag is null");
-            initialize();
-        }
-        Log.d(TAG, recordingThread.toString());
-        recordingThread.start();
-
+		recordingThread.start();
 
 //		// Post a notification in case the user moves to another app
 //		String ns = Context.NOTIFICATION_SERVICE;
@@ -464,7 +456,7 @@ public class WavRecordService extends Service implements Runnable{
 
 			in.close();
 			out.close();
-			handler.sendMessage(handler.obtainMessage());
+			//handler.sendMessage(handler.obtainMessage());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
