@@ -36,7 +36,10 @@ public class AboutFragment extends Fragment {
         initData();
         listAdapter = new ExpandableListAdapter(getContext(),listDataHeader,listHash);
         listView.setAdapter(listAdapter);
-
+        int count = listAdapter.getGroupCount();
+        for (int i = 0; i < count; i++) {
+            listView.expandGroup(i);
+        }
         return view;
     }
 
@@ -94,7 +97,5 @@ public class AboutFragment extends Fragment {
         listHash.put(listDataHeader.get(4),logout);
         listHash.put(listDataHeader.get(5),editAccount);
         listHash.put(listDataHeader.get(6),changeNotifications);
-
-
     }
 }

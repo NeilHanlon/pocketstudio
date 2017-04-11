@@ -202,6 +202,7 @@ public class PocketStudioMain extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 int recordPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.RECORD_AUDIO);
                 int readPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -220,8 +221,7 @@ public class PocketStudioMain extends AppCompatActivity {
                 if (writePermission != PackageManager.PERMISSION_GRANTED) {
                     Log.i(TAG_PERMISSION, "Write permissions denied");
                     makeWriteRequest();
-                }
-                else {
+                } else {
                     Intent newProject = new Intent();
                     newProject.setClass(PocketStudioMain.this, ProjectEditor.class);
                     startActivity(newProject);

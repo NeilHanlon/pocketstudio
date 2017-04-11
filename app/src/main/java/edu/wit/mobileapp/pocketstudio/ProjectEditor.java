@@ -54,7 +54,6 @@ public class ProjectEditor extends AppCompatActivity {
     private static final String TAG_STORAGE = "Storage";
     private static final String TAG_FILEIO = "FileIO";
 
-
     static String recordFileName = null;
     static String projectName = null;
 
@@ -248,6 +247,11 @@ public class ProjectEditor extends AppCompatActivity {
 
 
         //String filename = "android.resource://" + this.getPackageName() + "/raw/peppers1";
+    }
+
+    @Override
+    public Intent getIntent() {
+        return super.getIntent();
     }
 
     private Drawable makeDrawable(String resourceURI) {
