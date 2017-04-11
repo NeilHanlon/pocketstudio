@@ -10,19 +10,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.inputmethodservice.KeyboardView;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.SoundPool;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -161,6 +153,8 @@ public class ProjectEditor extends AppCompatActivity {
                     } else {
                         Log.d(TAG_TRANSPORT, "Stop Tapped");
                         mWavRecordService.stopRecording(mWavRecordService.getRecServiceHandler(), 0);
+                        recordButton.setBackground(pvRecordDrawable);
+                        Log.d(TAG_RECORD, "Recording stopped");
                         /*
                         mediaRecorder.stop();
                         mediaRecorder.reset();
@@ -169,9 +163,7 @@ public class ProjectEditor extends AppCompatActivity {
                         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
                         //mediaRecorder.setAudioEncoder(MediaRecorder.getAudioSourceMax());
                         mediaRecorder.setAudioEncodingBitRate(16);
-                        mediaRecorder.setAudioSamplingRate(44100);
-                        recordButton.setBackground(pvRecordDrawable);
-                        Log.d(TAG_RECORD, "Recording stopped");*/
+                        mediaRecorder.setAudioSamplingRate(44100);*/
                     }
                 } else {
                     Toast.makeText(context, "This device doesn't have a mic!", Toast.LENGTH_LONG).show();
@@ -196,7 +188,6 @@ public class ProjectEditor extends AppCompatActivity {
         backToZeroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWavRecordService.stopRecording(mWavRecordService.getRecServiceHandler(), 0);
             }
         });
 
