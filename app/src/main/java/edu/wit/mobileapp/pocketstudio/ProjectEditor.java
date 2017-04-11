@@ -51,6 +51,7 @@ public class ProjectEditor extends AppCompatActivity {
     static String projectName = null;
 
     WavRecordService mWavRecordService;
+    WavPlayerService mWavPlayerService;
     boolean mBound = false;
 
     boolean isRecording = false;
@@ -68,8 +69,10 @@ public class ProjectEditor extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Intent intent = new Intent(getApplicationContext(), WavRecordService.class);
+        Intent intent2 = new Intent(getApplicationContext(), WavPlayerService.class);
         Log.d(TAG_PLAYBACK, "#### WE HERE");
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        bindService(intent2, mConnectionPlayer, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -178,7 +181,21 @@ public class ProjectEditor extends AppCompatActivity {
                 Log.d(TAG_TRANSPORT, "PlayPause pressed");
                 isplaying = !isplaying;
                 if (isplaying) {
+                    Log.d(TAG_TRANSPORT, "inside");
                     playPauseButton.setBackground(pvPauseDrawable);
+                    File file1 = new File(createTrackFileName("1"));
+                    File file2 = new File(createTrackFileName("2"));
+                    Handler handler = new Handler();
+                    /*WavMixer wm = new WavMixer(handler);
+                    wm.setFilesToMix(file1, file2);*/
+                    File output = new File(createTrackFileName("mixed"));
+                    /*wm.setRawOutputFile(output);
+                    wm.run();*/
+                    mWavPlayerService.setFilesToPlay(file1, file2);
+                    mWavPlayerService.setOutputFile(output);
+                    mWavPlayerService.setTempFile(new File(createTrackFileName("raw")));
+                    //mWavPlayerService.setFileToPlay(output);
+                    mWavPlayerService.playAudio();
                 } else {
                     playPauseButton.setBackground(pvPlayDrawable);
                 }
@@ -206,6 +223,10 @@ public class ProjectEditor extends AppCompatActivity {
 
     private String createTrackFileName(){
         return recordFileName + "track_file" + String.valueOf(currentTrack) + ".wav";
+    }
+
+    private String createTrackFileName(String trackNum) {
+        return recordFileName + "track_file" + trackNum + ".wav";
     }
 
     private void customCheckPermissions() {
@@ -300,4 +321,37 @@ public class ProjectEditor extends AppCompatActivity {
             mBound = false;
         }
     };
+
+    private boolean mBoundPlayer;
+    private ServiceConnection mConnectionPlayer = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            WavPlayerService.PlayLocalBinder binder = (WavPlayerService.PlayLocalBinder) service;
+            mWavPlayerService = binder.getService();
+            Log.d(TAG_PLAYBACK, "#### WE HERE2222");
+            mBoundPlayer = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBoundPlayer = false;
+        }
+    };
+    
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+        if (mBoundPlayer) {
+            unbindService(mConnectionPlayer);
+            mBoundPlayer = false;
+        }
+    }
 }
