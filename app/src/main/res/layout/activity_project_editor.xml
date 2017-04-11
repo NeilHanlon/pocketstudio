@@ -154,14 +154,6 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@color/colorPrimaryDark">
-
-            <ImageButton
-                android:id="@+id/undoButton"
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/pvundobutton"/>
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -171,47 +163,63 @@
             android:layout_weight="0.50"
             android:background="@color/colorPrimaryDark">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/mediaControl"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:paddingLeft="27dp"
-                android:paddingRight="27dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:background="@drawable/mediacontrol">
 
-                <ImageButton
-                    android:id="@+id/buttonBackToZero"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:background="@drawable/pvbackzerobutton"/>
+                <RelativeLayout
+                    android:id="@+id/zeroTouchArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="34">
+                    <ImageButton
+                        android:id="@+id/buttonBackToZero"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/pvbackzerobutton"/>
+                </RelativeLayout>
 
-                <ImageButton
-                    android:id="@+id/buttonPlayPause"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/pvplaybutton"/>
+                <RelativeLayout
+                    android:id="@+id/playTouchArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="33">
+                    <ImageButton
+                        android:id="@+id/buttonPlayPause"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/pvplaybutton"/>
+                </RelativeLayout>
 
-                <ImageButton
-                    android:id="@+id/buttonRecord"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:onClick="RecordButton"
-                    android:background="@drawable/pvrecordbutton"/>
-
-            </RelativeLayout>
-
-
+                <RelativeLayout
+                    android:id="@+id/recorTouchdArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="33">
+                    <ImageButton
+                        android:id="@+id/buttonRecord"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
+                        android:onClick="RecordButton"
+                        android:background="@drawable/pvrecordbutton"/>
+                </RelativeLayout>
+            </LinearLayout>
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/timerRegion"
