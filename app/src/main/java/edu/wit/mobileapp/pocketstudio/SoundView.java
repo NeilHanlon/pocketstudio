@@ -45,33 +45,34 @@ public class SoundView extends View {
 	private static final int NEW_BIN_CALCULATED = 3;
 	private static final int DATA_LOADED = 1;
 
-    //	private ShapeDrawable mRect;
+	//	private ShapeDrawable mRect;
 	private int width;
 	private int height;
-    //private float binMaxVal;
+	//private float binMaxVal;
 	//private float binMinVal;
 	private short[] minVal;
 	private short[] maxVal;
 	private short[] minValR;
 	private short[] maxValR;
 	private ShapeDrawable mLine;
-    private String soundLabel;
-	private int nudgeFrames;
+	private String soundLabel;
+
 
 	private int numChannels;
-    private File fileToDraw;
-    
-    /*
+	private File fileToDraw;
+
+	/*
      * A SoundView needs to be able to draw a short wave file over a longer
      * period of time, as there might be another track that is longer, and we
      * need to match that overall project length for the shorter track
      */
-	private long timeLength; // The length over which to draw the wave file
+	private long recordingLength; // The length over which to draw the wave file (in frames)
+	private int nudgeFrames;  // number of frames to nudge mono track view by
 
 	private boolean needToRefreshData;
 	private boolean dataFromFileLoaded = false;
 	private boolean dataIsLoading = false;
-	private boolean isRecording = false; 
+	private boolean isRecording = false;
 
 	public SoundView(Context context) {
 		super(context);
@@ -88,12 +89,12 @@ public class SoundView extends View {
 		// TODO Auto-generated constructor stub
 	}
 
-	Handler handler=new Handler() { 
+	Handler handler=new Handler() {
 		int i = 0;
-		@Override 
-		public void handleMessage(Message msg) { 
-			
-			
+		@Override
+		public void handleMessage(Message msg) {
+
+
 			if (msg.what == NEW_BIN_CALCULATED) {
 				i++;
 				//Log.i(APP_NAME, "Handling new bin..." + i);
@@ -102,24 +103,24 @@ public class SoundView extends View {
 					invalidate();
 				}
 			}
-			
+
 			if (msg.what == DATA_LOADED) {
 				//Log.i(APP_NAME, "Handling data loaded...");
-			
-				invalidate();			
+
+				invalidate();
 			}
-			
-		} 
+
+		}
 	};
 
-    public void setNudgeFrames(int nudgeFrames) {
-        this.nudgeFrames = nudgeFrames;
-    }
+	public void setNudgeFrames(int nudgeFrames) {
+		this.nudgeFrames = nudgeFrames;
+	}
 
-    public void setFileToDraw(File file, long timeLength){
+	public void setFileToDraw(File file, long timeLength){
 		fileToDraw = file;
-		
-		this.timeLength = timeLength;
+
+		this.recordingLength = timeLength;   // actually number of stereo frames
 		//getDataFromFile();
 		//if (width > 0) {
 		if (fileToDraw.exists()) {
@@ -128,11 +129,11 @@ public class SoundView extends View {
 					if (dataFromFileLoaded == false) {
 						getDataFromFile();
 					}
-					
+
 				}
 			}).start();
 		}
-		
+
 	}
 
 	private void getDataFromFile(){
@@ -145,8 +146,8 @@ public class SoundView extends View {
 			}
 		}
 
-        FileInputStream fileStream;
-        try {
+		FileInputStream fileStream;
+		try {
 			fileStream = new FileInputStream(fileToDraw);
 		} catch (FileNotFoundException e) {
 			//Log.i(APP_NAME, "Bailing as file not found");
@@ -158,30 +159,30 @@ public class SoundView extends View {
 		//Log.i(APP_NAME, "in GetDataFromFile and numCh is " + numChannels);
 		if (numChannels == 0) numChannels = 1;  // Horrible kludge and shouldn't happen... but better than /0
 		//Log.i(APP_NAME, "in GetDataFromFile and numCh is " + numChannels);
-        int bitsPerSample = WavUtils.getBitsPerSample(fileToDraw);
+		int bitsPerSample = WavUtils.getBitsPerSample(fileToDraw);
 		if (bitsPerSample == 0) bitsPerSample = 16;
 		int read = 0;
 
 		/*
-		 * So we have timeLength, which is the total length in milliseconds over
+		 * So we have recordingLength, which is the total length in milliseconds over
 		 * which we want to display the file. The file length in milliseconds might
 		 * well be less than the total time over which we want to display it - another
 		 * track could be longer in other words.
-		 * 
-		 * So need to convert timeLength, which is in milliseconds, to a number of samples
-		 * 
-		 * x samples in   timeLength milliseconds
+		 *
+		 * So need to convert recordingLength, which is in milliseconds, to a number of samples
+		 *
+		 * x samples in   recordingLength milliseconds
 		 * 44100 samples in 1000 milliseconds
-		 * 
-		 * 
+		 *
+		 *
 		 */
 
-		//timeLength
+		//recordingLength
 		int bytesPerSample = bitsPerSample /8 * numChannels;
 		int numsamples = (int)fileToDraw.length()/bytesPerSample;  // this is frames - change code to reflect this
-		//int numsamples = (int)timeLength/1000 * 44100; // FIXME use getRate from WavUtils for this
-//		numsamples = (int)timeLength;   // HANG ON - timeLength is in frames (so samples - get consistent here); so this works...
-		int binSize = (int)timeLength/width; // so binSize is in samples; width is number of pixels
+		//int numsamples = (int)recordingLength/1000 * 44100; // FIXME use getRate from WavUtils for this
+//		numsamples = (int)recordingLength;   // HANG ON - recordingLength is in frames (so samples - get consistent here); so this works...
+		int binSize = (int) numsamples / width; // so binSize is in samples; width is number of pixels
 		byte[] bin = new byte[binSize * bytesPerSample]; //
 
         /*<------------- width in pixels ------------------------------>
@@ -234,7 +235,7 @@ public class SoundView extends View {
 							Log.i(APP_NAME, "caught buffer underflow exception ");
 							break;
 						}
-						
+
 						//if (binNum == width) break; // FIXME - problem just for the final buffer read?
 						if (maxValR[binNum] < sample) {
 							maxValR[binNum] = sample;
@@ -246,7 +247,7 @@ public class SoundView extends View {
 					//Log.i(APP_NAME, "i is " + i);
 				}
 
-				binNum ++;	
+				binNum ++;
 				if (binNum == width) break;  // FIXME - added during debugging
 				//Log.i(APP_NAME, "BinNum is " + binNum);
 				Message msg = handler.obtainMessage();
@@ -286,7 +287,7 @@ public class SoundView extends View {
 		/* resets the dataFromFileLoaded flag so that
 		 * a fresh (ie no wave data) view is drawn after
 		 * a file is deleted or removed
-		 * 
+		 *
 		 */
 
 		// Reset the bin data array, otherwise things will be drawn...
@@ -306,22 +307,22 @@ public class SoundView extends View {
 	public void setLabel(String label) {
 		soundLabel = label;
 	}
-	
+
 	public void drawStereoWaveform(Canvas canvas){
 		//int mcolor = 0xff0000ff;
 		int lcolor = Color.WHITE;
-		
+
 		float binLMax;
 		float binLMin;
 		float binRMax;
 		float binRMin;
 		//mRect.draw(canvas);
 
-		//Log.i(APP_NAME, "in drawStereoWaveForm");
+		Log.i(APP_NAME, "in drawStereoWaveForm");
 		mLine = new ShapeDrawable(new RectShape());
 		mLine.getPaint().setColor(lcolor);
 
-        ShapeDrawable mRightLine = new ShapeDrawable(new RectShape());
+		ShapeDrawable mRightLine = new ShapeDrawable(new RectShape());
 		mRightLine.getPaint().setColor(lcolor);
 
 		if (maxVal != null) {
@@ -353,18 +354,20 @@ public class SoundView extends View {
 	}
 
 	public void drawMonoWaveForm(Canvas canvas){
+		//int mcolor = 0xff0000ff;
+		//int lcolor = Color.WHITE;
 		int mcolor = 0xff0000ff;
-		int lcolor = Color.WHITE;
+		int lcolor = Color.BLACK;
 		int x = 0;
 		int y = 0;
-        ShapeDrawable mRect = new ShapeDrawable(new RectShape());
+		ShapeDrawable mRect = new ShapeDrawable(new RectShape());
 		mRect.getPaint().setColor(mcolor);
 		mRect.setBounds(x, y, x + width, y + height);
 		float binMax;
 		float binMin;
 		//mRect.draw(canvas);
 
-		//Log.i(APP_NAME, "in drawMonoWaveForm");
+		Log.i(APP_NAME, "in drawMonoWaveForm");
 		mLine = new ShapeDrawable(new RectShape());
 		mLine.getPaint().setColor(lcolor);
 
@@ -373,10 +376,19 @@ public class SoundView extends View {
 			int minlength = 0;
 			int baseline = height/2;
 
-			for (int i = 0; i < maxVal.length; i = i+2){
-				binMax = ((float)maxVal[i])/0x8000;
-				binMin = ((float)minVal[i])/0x8000;
+			int nudgePoint = (int)((float) nudgeFrames/recordingLength * width);
+			//Log.i(APP_NAME, "nudgePoint: " + nudgePoint);
 
+			for (int i = 0; i < maxVal.length - Math.abs(nudgePoint); i++){
+
+				if (i < nudgePoint) {
+					binMax = 0;
+					binMin = 0;
+				} else {
+					binMax = ((float) maxVal[i - nudgePoint]) / 0x8000;
+					binMin = ((float) minVal[i - nudgePoint]) / 0x8000;
+
+				}
 				maxlength = (int)(height * binMax)/2;
 				minlength = (int)(height * binMin)/2;
 
@@ -387,7 +399,8 @@ public class SoundView extends View {
 	}
 
 	public void drawAxes(Canvas canvas) {
-		int mcolor = Color.YELLOW;
+        //int mcolor = Color.YELLOW;
+        int mcolor = Color.BLACK;
 		ShapeDrawable axesRect; // Use for mono axis, and L channel if stereo
 		ShapeDrawable axesRectR;
 
@@ -419,9 +432,9 @@ public class SoundView extends View {
 		mPaint.setTextSize(24f);
 		mPaint.setColor(mColor);
 		canvas.drawText(soundLabel, 10, 20, mPaint);
-		
+
 	}
-	
+
 	private void displayRedBackground(Canvas canvas) {
 
 		int mcolor = Color.RED;
@@ -454,18 +467,19 @@ public class SoundView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+        Log.d(APP_NAME, "in ondraw and my canvas is " + canvas.toString());
 		drawAxes(canvas);
-		
+
 		if (isRecording == true) {
 			displayRedBackground(canvas);
 		}
-		
-		if (dataIsLoading == true || dataFromFileLoaded == true) {		
+
+		if (dataIsLoading == true || dataFromFileLoaded == true) {
 			if (numChannels == 1) drawMonoWaveForm(canvas);
 			if (numChannels == 2) drawStereoWaveform(canvas);
 			//Log.i(APP_NAME, "numChannels from onDraw is " + numChannels);
 		}
-		
+
 		if (soundLabel != null){
 			drawLabel(canvas);
 		}

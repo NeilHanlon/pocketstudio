@@ -37,6 +37,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProjectEditor extends AppCompatActivity {
@@ -66,6 +68,12 @@ public class ProjectEditor extends AppCompatActivity {
     private RelativeLayout recordButtonRelativeLayout;
     private ImageView recordButton;
     private MediaPlayer player = null;
+
+    private SoundView soundView1;
+    private SoundView soundView2;
+    private SoundView soundView3;
+    private SoundView soundView4;
+    List<SoundView> soundviews;
 
     @Override
     protected void onStart() {
@@ -134,6 +142,21 @@ public class ProjectEditor extends AppCompatActivity {
         mediaRecorder.setAudioEncodingBitRate(16);
         mediaRecorder.setAudioSamplingRate(44100);
 
+        soundView1 = (SoundView) findViewById(R.id.soundView1);
+        soundView1.setFileToDraw(new File(createTrackFileName("1")), 10000);
+        soundView2 = (SoundView) findViewById(R.id.soundView2);
+        soundView2.setFileToDraw(new File(createTrackFileName("2")), 10000);
+        soundView3 = (SoundView) findViewById(R.id.soundView3);
+        soundView3.setFileToDraw(new File(createTrackFileName("3")), 10000);
+        soundView4 = (SoundView) findViewById(R.id.soundView4);
+        soundView4.setFileToDraw(new File(createTrackFileName("4")), 10000);
+
+        soundviews = new ArrayList<SoundView>();
+        soundviews.add(soundView1);
+        soundviews.add(soundView2);
+        soundviews.add(soundView3);
+        soundviews.add(soundView4);
+
         recordButtonRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,6 +176,7 @@ public class ProjectEditor extends AppCompatActivity {
                             Log.e(TAG_RECORD, "prepare() failed");
                         }
                         mediaRecorder.start();*/
+                        soundviews.get(currentTrack-1).setIsRecording(true);
                         recordButton.setBackground(pvStopDrawable);
                         Log.d(TAG_RECORD, "Recording started");
                     } else {
@@ -160,6 +184,9 @@ public class ProjectEditor extends AppCompatActivity {
                         mWavRecordService.stopRecording(mWavRecordService.getRecServiceHandler(), 0);
                         recordButton.setBackground(pvRecordDrawable);
                         Log.d(TAG_RECORD, "Recording stopped");
+                        soundviews.get(currentTrack-1).setIsRecording(false);
+                        soundviews.get(currentTrack-1).setInvalidate();
+                        soundviews.get(currentTrack-1).setRefreshDataFlag();
                         /*
                         mediaRecorder.stop();
                         mediaRecorder.reset();
@@ -203,6 +230,7 @@ public class ProjectEditor extends AppCompatActivity {
                 }
             }
         });
+
 
         //String filename = "android.resource://" + this.getPackageName() + "/raw/peppers1";
     }

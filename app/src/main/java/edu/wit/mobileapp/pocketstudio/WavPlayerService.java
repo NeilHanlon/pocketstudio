@@ -56,15 +56,21 @@ public class WavPlayerService extends Service implements Runnable {
 
 	private Handler playBackPosHandler;
 	private Thread play_thread;
-	private File monoFile;
-	private File stereoFile;
+    private File monoFile;
+    private File stereoFile;
+    private File file3;
+    private File file4;
 	private AudioTrack mAudioTrack;
 
 	private int bufferSize;
 	private float monoVolL = (float)0.8;  
 	private float monoVolR = (float)0.8;
-	private float stereoVolL = (float)0.8;  
-	private float stereoVolR = (float)0.8;
+	private float stereoVolL = (float)0.8;
+    private float stereoVolR = (float)0.8;
+    private float file3VolL = (float)0.8;
+    private float file3VolR = (float)0.8;
+    private float file4VolL = (float)0.8;
+    private float file4VolR = (float)0.8;
 
 
 	private int frameOffset = 0;
@@ -448,14 +454,18 @@ public class WavPlayerService extends Service implements Runnable {
 		// This doesn't have to be fast or predictable in terms of latency as recording is not happening with this
 
 		FileInputStream monoStream = null;
-		FileInputStream stereoStream = null;
+        FileInputStream stereoStream = null;
+        FileInputStream stream3 = null;
+        FileInputStream stream4 = null;
 		int monoByteSkip = 0;
         int stereoByteSkip = 0;
 
 		byte[] mono;
 		byte[] stereo;
 		ShortBuffer monoShortsBuff;
-		ShortBuffer stereoShortsBuff;
+        ShortBuffer stereoShortsBuff;
+        ShortBuffer stream3buff;
+        ShortBuffer stream4buff;
 
 		try {
 			monoStream = new FileInputStream(monoFile);
@@ -470,6 +480,20 @@ public class WavPlayerService extends Service implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+        try {
+            stream3 = new FileInputStream(file3);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            stream4 = new FileInputStream(file4);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
 		/*if (nudgeFrames < 0) {    // delay mono track
             monoByteSkip = Math.abs(frameOffset * 2 + nudgeFrames * 2 + 44);
