@@ -481,7 +481,7 @@ public class WavPlayerService extends Service implements Runnable {
 			e.printStackTrace();
 		}
 
-        try {
+        /*try {
             stream3 = new FileInputStream(file3);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
@@ -493,7 +493,7 @@ public class WavPlayerService extends Service implements Runnable {
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        }*/
 
 		/*if (nudgeFrames < 0) {    // delay mono track
             monoByteSkip = Math.abs(frameOffset * 2 + nudgeFrames * 2 + 44);
@@ -588,7 +588,7 @@ public class WavPlayerService extends Service implements Runnable {
 
                     // write to the AudioTrack
                     if (shouldPlay) {
-                        //mAudioTrack.write(outArray, 0, outArray.length);
+                        mAudioTrack.write(outArray, 0, outArray.length);
 						out.write(outByteArray, 0, outByteArray.length);
                     }
                     else {
@@ -619,7 +619,7 @@ public class WavPlayerService extends Service implements Runnable {
                         }
 						ByteBuffer.wrap(outByteArray).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(outArray);
                         if (shouldPlay) {
-                            //mAudioTrack.write(outArray, 0, outArray.length);
+                            mAudioTrack.write(outArray, 0, outArray.length);
 							out.write(outByteArray, 0, outByteArray.length);
                         } else {break;}
                     }

@@ -15,6 +15,7 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +40,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.wit.mobileapp.pocketstudio.models.Project;
+import edu.wit.mobileapp.pocketstudio.models.Region;
+import edu.wit.mobileapp.pocketstudio.models.Track;
 
 
 public class ProjectEditor extends AppCompatActivity {
@@ -73,6 +78,10 @@ public class ProjectEditor extends AppCompatActivity {
     private SoundView soundView2;
     private SoundView soundView3;
     private SoundView soundView4;
+
+    Project project;
+    List<Track> tracks;
+    List<Region> regions;
     List<SoundView> soundviews;
 
     @Override
@@ -90,9 +99,13 @@ public class ProjectEditor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_editor);
 
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         customCheckPermissions();
 
         String pocketStudioDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pocketStudio";
+
 
         //buttons
         playPauseRelativeLayout = (RelativeLayout) findViewById(R.id.playTouchArea);
@@ -225,6 +238,8 @@ public class ProjectEditor extends AppCompatActivity {
                     mWavPlayerService.setTempFile(new File(createTrackFileName("raw")));
                     //mWavPlayerService.setFileToPlay(output);
                     mWavPlayerService.playAudio();
+                    //mWavPlayerService.setFileToPlay(output);
+                    //mWavPlayerService.playAudio();
                 } else {
                     playPauseButton.setBackground(pvPlayDrawable);
                 }
@@ -377,5 +392,11 @@ public class ProjectEditor extends AppCompatActivity {
             unbindService(mConnectionPlayer);
             mBoundPlayer = false;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
     }
 }
