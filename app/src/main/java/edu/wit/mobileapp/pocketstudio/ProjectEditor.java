@@ -26,6 +26,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,9 +61,10 @@ public class ProjectEditor extends AppCompatActivity {
     int currentTrack = 1; // selector for currently active track
 
     //Button references
-    private ImageButton playPauseButton;
-    private ImageButton backToZeroButton;
-    private ImageButton recordButton;
+    private RelativeLayout playPauseRelativeLayout;
+    private ImageView playPauseButton;
+    private RelativeLayout recordButtonRelativeLayout;
+    private ImageView recordButton;
     private MediaPlayer player = null;
 
     @Override
@@ -85,9 +87,10 @@ public class ProjectEditor extends AppCompatActivity {
         String pocketStudioDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pocketStudio";
 
         //buttons
-        playPauseButton = (ImageButton) findViewById(R.id.buttonPlayPause);
-        backToZeroButton = (ImageButton) findViewById(R.id.buttonBackToZero);
-        recordButton = (ImageButton) findViewById(R.id.buttonRecord);
+        playPauseRelativeLayout = (RelativeLayout) findViewById(R.id.playTouchArea);
+        playPauseButton = (ImageView) findViewById(R.id.buttonPlayPause);
+        recordButtonRelativeLayout = (RelativeLayout) findViewById(R.id.recordTouchArea);
+        recordButton = (ImageView) findViewById(R.id.buttonRecord);
         final Context context = getApplicationContext();
 
         //button resource declarations for icon changes, use drawables as sources
@@ -131,8 +134,7 @@ public class ProjectEditor extends AppCompatActivity {
         mediaRecorder.setAudioEncodingBitRate(16);
         mediaRecorder.setAudioSamplingRate(44100);
 
-
-        recordButton.setOnClickListener(new View.OnClickListener() {
+        recordButtonRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isRecording = !isRecording;
@@ -175,7 +177,7 @@ public class ProjectEditor extends AppCompatActivity {
 
         });
 
-        playPauseButton.setOnClickListener(new View.OnClickListener() {
+        playPauseRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG_TRANSPORT, "PlayPause pressed");
@@ -199,12 +201,6 @@ public class ProjectEditor extends AppCompatActivity {
                 } else {
                     playPauseButton.setBackground(pvPlayDrawable);
                 }
-            }
-        });
-
-        backToZeroButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
             }
         });
 
