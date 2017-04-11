@@ -176,6 +176,20 @@ public class ProjectEditor extends AppCompatActivity {
         soundviews.add(soundView3);
         soundviews.add(soundView4);
 
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recordButtonRelativeLayout.callOnClick();
+            }
+        });
+
+        playPauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playPauseRelativeLayout.callOnClick();
+            }
+        });
+
         recordButtonRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,7 +209,7 @@ public class ProjectEditor extends AppCompatActivity {
                             Log.e(TAG_RECORD, "prepare() failed");
                         }
                         mediaRecorder.start();*/
-                        soundviews.get(currentTrack-1).setIsRecording(true);
+                        //soundviews.get(currentTrack-1).setIsRecording(true);
                         recordButton.setBackground(pvStopDrawable);
                         Log.d(TAG_RECORD, "Recording started");
                     } else {
@@ -203,9 +217,9 @@ public class ProjectEditor extends AppCompatActivity {
                         mWavRecordService.stopRecording(mWavRecordService.getRecServiceHandler(), 0);
                         recordButton.setBackground(pvRecordDrawable);
                         Log.d(TAG_RECORD, "Recording stopped");
-                        soundviews.get(currentTrack-1).setIsRecording(false);
-                        soundviews.get(currentTrack-1).setInvalidate();
-                        soundviews.get(currentTrack-1).setRefreshDataFlag();
+                        //soundviews.get(currentTrack-1).setIsRecording(false);
+                        //soundviews.get(currentTrack-1).setInvalidate();
+                        //soundviews.get(currentTrack-1).setRefreshDataFlag();
                         /*
                         mediaRecorder.stop();
                         mediaRecorder.reset();
