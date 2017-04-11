@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ public class DisplayGroupFragment extends Fragment {
     @BindView(R.id.usersListView) ListView _usersListView;
     @BindView(R.id.projectsListViewContainer) LinearLayout _projectsListViewContainer;
     @BindView(R.id.usersListViewContainer) LinearLayout _usersListViewContainer;
+    @BindView(R.id.addProjectButton) ImageView _addProjectButton;
+    @BindView(R.id.addUserButton) ImageView _addUserButton;
 
     View noUsersView;
     View noProjectsView;
