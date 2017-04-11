@@ -16,16 +16,20 @@
 
 package edu.wit.mobileapp.pocketstudio;
 
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Binder;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -36,6 +40,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
+import java.util.List;
 
 /**
  * The main player class for Twotrack. It plays appropriate tracks as
@@ -62,6 +67,8 @@ public class WavPlayerService extends Service implements Runnable {
     private File file4;
 	private AudioTrack mAudioTrack;
 
+	private String outputDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pocketStudio/";
+
 	private int bufferSize;
 	private float monoVolL = (float)0.8;  
 	private float monoVolR = (float)0.8;
@@ -84,6 +91,7 @@ public class WavPlayerService extends Service implements Runnable {
 	private boolean playStereo;
 	private boolean playMono;
 	private boolean playMix;
+	private boolean shouldMixDownSteroMono;
 	private boolean stereoFileLonger;
 	private boolean shouldPlay;
 
@@ -91,6 +99,8 @@ public class WavPlayerService extends Service implements Runnable {
 	private byte[] inBytes;
     private int readBufferSize;
 	private short[] outArray;
+
+	private List<File> monoFilesToMix;
 
 	private long playStartTime;
 
@@ -101,9 +111,12 @@ public class WavPlayerService extends Service implements Runnable {
 	// Binder given to clients
 	private final IBinder mBinder = new PlayLocalBinder();
     private File tempFile;
+	public ProgressDialog progressDialog;
+	private ImageView playPauseButton;
+	private Drawable pvPlayDrawable;
 
 
-    public void setHandler (Handler h) {
+	public void setHandler (Handler h) {
 		playBackPosHandler = h;    	
 	}
 
@@ -119,6 +132,15 @@ public class WavPlayerService extends Service implements Runnable {
             e.printStackTrace();
         }
     }
+
+	public void setProgressDialog(ProgressDialog progressDialog) {
+		this.progressDialog = progressDialog;
+	}
+
+	public void setPlayButtonView(ImageView playPauseButton, Drawable pvPlayDrawable) {
+		this.playPauseButton = playPauseButton;
+		this.pvPlayDrawable = pvPlayDrawable;
+	}
 
 	/**
 	 * Class used for the client Binder.  Because we know this service always
@@ -168,6 +190,128 @@ public class WavPlayerService extends Service implements Runnable {
 		playStereo = false;
 		playMono = false;
 		initialise();
+
+	}
+
+	public void setFilesToMix(File file1, File file2) {
+		monoFile = file1;
+		stereoFile = file2;
+
+		Log.d(APP_NAME + "SF", "monofile: " + String.valueOf(monoFile.length()));
+		Log.d(APP_NAME + "SF", "stereofile: " + String.valueOf(stereoFile.length()));
+
+		if (monoFile.length()*2 > stereoFile.length()) {
+			size = monoFile.length()*2; // so the size of a stereo file of that length
+			//Log.i(APP_NAME, "monoFile size " + size);
+		}
+		else {
+			size = stereoFile.length();
+			//Log.i(APP_NAME, "stereoFile size " + size);
+			stereoFileLonger = true;
+		}
+
+		shouldMixDownSteroMono = true;
+		playMix = false;
+		playStereo = false;
+		playMono = false;
+		initialise();
+	}
+
+	public void setFilesToMix(List<File> files) {
+
+		monoFilesToMix = files;
+		File mix1 = null;
+		File mix2 = null;
+		File finaloutput = null;
+		Log.d(APP_NAME, "Starting...");
+		try {
+			/***
+			 * We will have a max of 2 intermediary files and a final......
+			 */
+			mix1 = File.createTempFile("mix1", ".wav", new File(outputDir)); // file 1 and 2
+			mix2 = File.createTempFile("mix2", ".wav", new File(outputDir)); // add file 3
+			finaloutput = new File(outputDir + "mixed_final.wav"); // final mix
+			File mixfile = null;
+
+			if (files.size() <= 0) {
+				return;
+			}
+			if (files.size() == 1) {
+				this.setFileToPlay(files.remove(0));
+				this.playAudio();
+				return;
+			}
+			if (files.size() == 2) {
+				this.setFilesToPlay(files.remove(1), files.remove(0));
+				this.setOutputFile(finaloutput);
+				this.playAudio();
+			} else {
+				for (int i = 0; i < files.size(); i++) {
+					if (i + 1 >= files.size()) {
+						//last file, go to output
+						this.setOutputFile(finaloutput);
+						this.setFilesToMix(files.get(i), mixfile);
+					} else if (i == 0) {
+						//first file, mix 1 and 2 as mono
+						this.setFilesToPlay(files.get(i), files.get(i + 1));
+						this.setOutputFile(mix1);
+						mixfile = mix1;
+					} else {
+						// only happens on i = 2
+						this.setFilesToMix(files.get(i + 1), mixfile);
+						this.setOutputFile(mix2);
+						mixfile = mix2;
+					}
+					shouldPlay = true;
+					play_thread.start();
+					synchronized (play_thread) {
+						play_thread.join();
+					}
+				}
+			}
+			this.progressDialog.dismiss();
+			this.setFileToPlay(finaloutput);
+			this.playAudio();
+			synchronized (play_thread) {
+				play_thread.join();
+			}
+			this.playPauseButton.setBackground(pvPlayDrawable);
+			/*this.setFilesToPlay(monoFilesToMix.get(0), monoFilesToMix.get(1));
+			this.setOutputFile(mix1); //creates stereo mix1
+			shouldPlay = true;
+			Log.d(APP_NAME, "Starting mix 1 and 2");
+			play_thread.start();
+			synchronized (play_thread) {
+				play_thread.join();
+			}
+			Log.d(APP_NAME, "finishd mix 1 and 2");
+
+			shouldPlay = false;
+			playMix = false;
+			shouldMixDownSteroMono = true;
+			this.setFilesToMix(monoFilesToMix.get(2), mix1); // mix down third track and mixed 1 and 2
+			this.setOutputFile(mix2); //creates stereo mix2 of tracks 1 2 3
+			shouldPlay = true;
+			Log.d(APP_NAME, "Starting mix 12 and 3");
+			play_thread.start();
+			synchronized (play_thread) {
+				play_thread.join();
+			}
+			Log.d(APP_NAME, "stopping mix 12 and 3");
+
+
+			this.setFilesToMix(monoFilesToMix.get(3), mix2); // mix down fourth track and mixed 1 and 2 and 3
+			this.setOutputFile(finaloutput);
+			shouldPlay = true;
+			Log.d(APP_NAME, "Starting final mix");
+			play_thread.start();
+			synchronized (play_thread) {
+				play_thread.join();
+			}*/
+			Log.d(APP_NAME, "Completed");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -357,6 +501,10 @@ public class WavPlayerService extends Service implements Runnable {
 			mixAndPlay();
 		}
 
+		if (shouldMixDownSteroMono && mAudioTrack.getState() == AudioTrack.STATE_INITIALIZED) {
+			mixDownSteroMono();
+		}
+
 		if ((playStereo || playMono) && mAudioTrack.getState() == AudioTrack.STATE_INITIALIZED){
 			playFile();
 		}
@@ -455,8 +603,6 @@ public class WavPlayerService extends Service implements Runnable {
 
 		FileInputStream monoStream = null;
         FileInputStream stereoStream = null;
-        FileInputStream stream3 = null;
-        FileInputStream stream4 = null;
 		int monoByteSkip = 0;
         int stereoByteSkip = 0;
 
@@ -464,8 +610,6 @@ public class WavPlayerService extends Service implements Runnable {
 		byte[] stereo;
 		ShortBuffer monoShortsBuff;
         ShortBuffer stereoShortsBuff;
-        ShortBuffer stream3buff;
-        ShortBuffer stream4buff;
 
 		try {
 			monoStream = new FileInputStream(monoFile);
@@ -541,14 +685,14 @@ public class WavPlayerService extends Service implements Runnable {
 		//monoShortsBuff = ByteBuffer.wrap(mono).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
 		//stereoShortsBuff = ByteBuffer.wrap(stereo).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
 		int totalBytes = 0;
-		Log.d("PLAYER", "stereo file length be: " + String.valueOf(stereoFile.length()));
+		//Log.d("PLAYER", "stereo file length be: " + String.valueOf(stereoFile.length()));
 		try {
 			BufferedOutputStream out = new BufferedOutputStream(this.fos, bufferSize);
             if (monoStream != null)
                 while ((monoBytesRead = monoStream.read(mono, 0, bufferSize / 2)) != -1) {
 					totalBytes += monoBytesRead;
-					Log.i("PLAYER", "we r starting a lope " + String.valueOf(monoBytesRead));
-					Log.i("PLAYER", "total bytes:  " + String.valueOf(totalBytes));
+					//Log.i("PLAYER", "we r starting a lope " + String.valueOf(monoBytesRead));
+					//Log.i("PLAYER", "total bytes:  " + String.valueOf(totalBytes));
 
                     // wrap this buffer as a shortbuffer
                     monoShortsBuff = ByteBuffer.wrap(mono).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
@@ -556,7 +700,7 @@ public class WavPlayerService extends Service implements Runnable {
                     if (stereoStream != null && totalBytes < stereoFile.length()) {
                         stereoBytesRead = stereoStream.read(stereo, 0, bufferSize / 2);
                     } else {
-						Log.i("PLAYER", "thisshould happen sometimes");
+						//Log.i("PLAYER", "thisshould happen sometimes");
 					}
                     // wrap as shortbuffer
 
@@ -588,7 +732,7 @@ public class WavPlayerService extends Service implements Runnable {
 
                     // write to the AudioTrack
                     if (shouldPlay) {
-                        mAudioTrack.write(outArray, 0, outArray.length);
+                        //mAudioTrack.write(outArray, 0, outArray.length);
 						out.write(outByteArray, 0, outByteArray.length);
                     }
                     else {
@@ -619,7 +763,7 @@ public class WavPlayerService extends Service implements Runnable {
                         }
 						ByteBuffer.wrap(outByteArray).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(outArray);
                         if (shouldPlay) {
-                            mAudioTrack.write(outArray, 0, outArray.length);
+                            //mAudioTrack.write(outArray, 0, outArray.length);
 							out.write(outByteArray, 0, outByteArray.length);
                         } else {break;}
                     }
@@ -792,6 +936,173 @@ public class WavPlayerService extends Service implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void mixDownSteroMono() {
+
+		// This doesn't have to be fast or predictable in terms of latency as recording is not happening with this
+
+		FileInputStream monoStream = null;
+		FileInputStream stereoStream = null;
+		int monoByteSkip = 0;
+		int stereoByteSkip = 0;
+
+		byte[] mono;
+		byte[] stereo;
+		ShortBuffer monoShortsBuff;
+		ShortBuffer stereoShortsBuff;
+
+		try {
+			monoStream = new FileInputStream(monoFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			stereoStream = new FileInputStream(stereoFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		nudgeFrames = 0;
+		if (nudgeFrames < 0) {    // delay mono track
+			monoByteSkip = Math.abs(frameOffset * 2 + nudgeFrames * 2 + 44);
+			// FIXME shouldn't it be frameoffset * 2 + Math.abs(nudgeFrames) * 2 + 44; ??
+			stereoByteSkip = frameOffset * 4 + 44;
+		}
+		if (nudgeFrames >= 0) {    // delay stereo track
+			monoByteSkip = frameOffset * 2 + 44;
+			stereoByteSkip = frameOffset * 4 + nudgeFrames * 4 + 44;
+		}
+
+
+		// If the user is seeking into the audio, skip the appropriate number of frames
+		try {
+			if (monoStream != null) {
+				monoStream.skip(monoByteSkip); // 2 bytes per mono frame + header
+			}
+			if (stereoStream != null) {
+				stereoStream.skip(stereoByteSkip); // 4 bytes per stereo frame
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		mono = new byte[bufferSize/2];
+		stereo = new byte[bufferSize];
+		// Loop through mono stream
+		int monoBytesRead = 0;
+		int stereoBytesRead = 0;
+		byte[] outByteArray = new byte[bufferSize];
+		short[] outArray;
+		//short[] stereoOut;
+		short monoSample;
+		short stereoSampleL;
+		short stereoSampleR;
+		outArray = new short[bufferSize/2];
+		//stereoOut = new short[bufferSize];
+		if (mAudioTrack.getState() == AudioTrack.STATE_INITIALIZED) {
+			mAudioTrack.play();
+		}
+		playStartTime = System.currentTimeMillis();
+		//Log.i(APP_NAME, "in mixAndPlay and Sys time is " + playStartTime);
+		//monoShortsBuff = ByteBuffer.wrap(mono).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
+		//stereoShortsBuff = ByteBuffer.wrap(stereo).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
+		int totalBytes = 0;
+		try {
+			this.fos = new FileOutputStream(tempFile);
+			BufferedOutputStream out = new BufferedOutputStream(this.fos, bufferSize);
+			if (monoStream != null)
+				while ((monoBytesRead = monoStream.read(mono, 0, bufferSize / 2)) != -1) {
+					totalBytes += monoBytesRead;
+					//Log.d(APP_NAME, "totalbytes: " + totalBytes);
+					// wrap this buffer as a shortbuffer
+					monoShortsBuff = ByteBuffer.wrap(mono).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
+					// read from the stereo file
+					if (stereoStream != null && totalBytes * 2 < stereoFile.length()) {
+						stereoBytesRead = stereoStream.read(stereo, 0, bufferSize);
+					}
+					// wrap as shortbuffer
+
+					stereoShortsBuff = ByteBuffer.wrap(stereo).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
+					int i, n;
+
+					for (i = 0, n = monoShortsBuff.remaining(); i < n; i++) {   //WTF?
+
+						// pull shorts for mixing
+						monoSample = monoShortsBuff.get();
+
+						if ( totalBytes * 2 < stereoFile.length()) {
+							//Log.d(APP_NAME, "setting stereosample to something");
+							stereoSampleL = stereoShortsBuff.get();
+							stereoSampleR = stereoShortsBuff.get();
+						} else {
+							//Log.d(APP_NAME, "setting stereosample to 0");
+							stereoSampleL = 0;
+							stereoSampleR = 0;
+						}
+						// mix for the Audiotrack
+						int outL = (int) ((monoSample * monoVolL) + (stereoSampleL * stereoVolL));
+						int outR = (int) ((monoSample * monoVolR) + (stereoSampleR * stereoVolR));
+						//Log.i(APP_NAME, "In mixAndPlay and stereo vol is " + stereoVolL);
+						// put back into a buffer for output to the AudioTrack
+						outArray[i * 2] = (short) outL;
+						outArray[i * 2 + 1] = (short) outR;
+
+					}
+					//Log.i(APP_NAME, "mix and play...");
+					//ByteBuffer.wrap(outByteArray).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(outArray);
+
+					// write to the AudioTrack
+					ByteBuffer.wrap(outByteArray).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(outArray);
+					if (shouldPlay) {
+						//mAudioTrack.write(outArray, 0, outArray.length);
+						out.write(outByteArray, 0, outByteArray.length);
+					}
+					else {
+						break;
+					}
+
+				}
+
+			if (shouldPlay && stereoFileLonger) {
+				Log.d(APP_NAME, "MIXDOWN Stereo is longer");
+				if (stereoStream != null) {
+					while ((stereoBytesRead = stereoStream.read(stereo, 0, bufferSize)) != -1) {
+
+						stereoShortsBuff = ByteBuffer.wrap(stereo).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
+
+						int i, n;
+						for (i = 0, n = stereoShortsBuff.remaining(); i < n/2; i++) {
+
+							stereoSampleL = stereoShortsBuff.get();
+							stereoSampleR = stereoShortsBuff.get();
+
+							int  outL = (int)(stereoSampleL * stereoVolL);
+							int  outR = (int)(stereoSampleR * stereoVolR);
+
+							outArray[i * 2] = (short)outL;
+							outArray[i * 2 + 1] = (short)outR;
+							//Log.i(APP_NAME, "n is " + n + "and i is " + i);
+						}
+						ByteBuffer.wrap(outByteArray).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(outArray);
+						if (shouldPlay) {
+							//mAudioTrack.write(outArray, 0, outArray.length);
+							out.write(outByteArray, 0, outByteArray.length);
+						}else {break;}
+					}
+				}
+
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		copyWaveFile(tempFile, outputFile);
+
 	}
 
 }

@@ -2,6 +2,7 @@ package edu.wit.mobileapp.pocketstudio;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -154,14 +155,20 @@ public class ProjectEditor extends AppCompatActivity {
         mediaRecorder.setAudioEncodingBitRate(16);
         mediaRecorder.setAudioSamplingRate(44100);
 
-        soundView1 = (SoundView) findViewById(R.id.soundView1);
-        soundView1.setFileToDraw(new File(createTrackFileName("1")), 10000);
-        soundView2 = (SoundView) findViewById(R.id.soundView2);
-        soundView2.setFileToDraw(new File(createTrackFileName("2")), 10000);
-        soundView3 = (SoundView) findViewById(R.id.soundView3);
-        soundView3.setFileToDraw(new File(createTrackFileName("3")), 10000);
-        soundView4 = (SoundView) findViewById(R.id.soundView4);
-        soundView4.setFileToDraw(new File(createTrackFileName("4")), 10000);
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        // On complete call either onLoginSuccess or onLoginFailed
+                        soundView1 = (SoundView) findViewById(R.id.soundView1);
+                        soundView1.setFileToDraw(new File(createTrackFileName("1")), 10000);
+                        soundView2 = (SoundView) findViewById(R.id.soundView2);
+                        soundView2.setFileToDraw(new File(createTrackFileName("2")), 10000);
+                        soundView3 = (SoundView) findViewById(R.id.soundView3);
+                        soundView3.setFileToDraw(new File(createTrackFileName("3")), 10000);
+                        soundView4 = (SoundView) findViewById(R.id.soundView4);
+                        soundView4.setFileToDraw(new File(createTrackFileName("4")), 10000);
+                    }
+                }, 1000);
 
         soundviews = new ArrayList<SoundView>();
         soundviews.add(soundView1);
@@ -226,19 +233,34 @@ public class ProjectEditor extends AppCompatActivity {
                     playPauseButton.setBackground(pvPauseDrawable);
                     File file1 = new File(createTrackFileName("1"));
                     File file2 = new File(createTrackFileName("2"));
-                    Handler handler = new Handler();
-                    /*WavMixer wm = new WavMixer(handler);
-                    wm.setFilesToMix(file1, file2);*/
-                    File output = new File(createTrackFileName("mixed"));
-                    /*wm.setRawOutputFile(output);
-                    wm.run();*/
-                    mWavPlayerService.setFilesToPlay(file1, file2);
-                    mWavPlayerService.setOutputFile(output);
-                    mWavPlayerService.setTempFile(new File(createTrackFileName("raw")));
-                    //mWavPlayerService.setFileToPlay(output);
-                    mWavPlayerService.playAudio();
-                    //mWavPlayerService.setFileToPlay(output);
-                    //mWavPlayerService.playAudio();
+                    File file3 = new File(createTrackFileName("3"));
+                    File file4 = new File(createTrackFileName("4"));
+                    List<File> files = new ArrayList<File>();
+                    files.add(file1);
+                    files.add(file2);
+                    files.add(file3);
+                    files.add(file4);
+                    final List<File> realfiles = new ArrayList<File>();
+                    for (File file : files) {
+                        if (file.exists()) {
+                            realfiles.add(file);
+                        }
+                    }
+                    final ProgressDialog progressDialog = new ProgressDialog(ProjectEditor.this,
+                            R.style.AppTheme_Dark_Dialog);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Mixing...");
+                    progressDialog.show();
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    // On complete call either onLoginSuccess or onLoginFailed
+                                    mWavPlayerService.setTempFile(new File(createTrackFileName("raw")));
+                                    mWavPlayerService.setProgressDialog(progressDialog);
+                                    mWavPlayerService.setPlayButtonView(playPauseButton, pvPlayDrawable);
+                                    mWavPlayerService.setFilesToMix(realfiles);
+                                }
+                            }, 500);
                 } else {
                     playPauseButton.setBackground(pvPlayDrawable);
                 }
